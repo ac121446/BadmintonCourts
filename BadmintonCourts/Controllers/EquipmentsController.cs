@@ -34,7 +34,7 @@ namespace BadmintonCourts.Controllers
             }
 
             var equipment = await _context.Equipments
-                .FirstOrDefaultAsync(m => m.EquipmentsID == id);
+                .FirstOrDefaultAsync(m => m.EquipmentID == id);
             if (equipment == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EquipmentsID,Name,Type,Price")] Equipment equipment)
+        public async Task<IActionResult> Create([Bind("EquipmentID,Name,Type,Price")] Equipment equipment)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("EquipmentsID,Name,Type,Price")] Equipment equipment)
+        public async Task<IActionResult> Edit(string id, [Bind("EquipmentID,Name,Type,Price")] Equipment equipment)
         {
-            if (id != equipment.EquipmentsID)
+            if (id != equipment.EquipmentID)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace BadmintonCourts.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EquipmentExists(equipment.EquipmentsID))
+                    if (!EquipmentExists(equipment.EquipmentID))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace BadmintonCourts.Controllers
             }
 
             var equipment = await _context.Equipments
-                .FirstOrDefaultAsync(m => m.EquipmentsID == id);
+                .FirstOrDefaultAsync(m => m.EquipmentID == id);
             if (equipment == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace BadmintonCourts.Controllers
 
         private bool EquipmentExists(string id)
         {
-            return _context.Equipments.Any(e => e.EquipmentsID == id);
+            return _context.Equipments.Any(e => e.EquipmentID == id);
         }
     }
 }

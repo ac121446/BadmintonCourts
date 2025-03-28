@@ -12,10 +12,12 @@ namespace BadmintonRentals.Models
         [ForeignKey("LocationID"), Required]
         public int LocationID { get; set; }
 
-        [Required(ErrorMessage = "Enter the name")]
+        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Court name must only contain letters, numbers or spaces.")]
+        [Display(Name = "Court Name")]
         public string CourtName { get; set; }
 
-        [Required(ErrorMessage = "Enter the court type")]
+        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Court type must only contain letters, numbers or spaces.")]
+        [Display(Name = "Court Type")]
         public string CourtType { get; set; }
 
         [Required]

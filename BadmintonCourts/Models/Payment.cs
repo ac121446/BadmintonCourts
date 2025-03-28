@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using BadmintonCourts.Models;
 
 namespace BadmintonRentals.Models
@@ -6,26 +7,20 @@ namespace BadmintonRentals.Models
     public class Payment
     {
         [Key]
-        public int LocationID { get; set; }
+        public string PaymentID { get; set; }
 
-        [Required(ErrorMessage = "Enter location name")]
-        public string LocationName { get; set; }
+        [ForeignKey("BookingID"), Required]
+        public int BookingID { get; set; }
 
-        [Required(ErrorMessage = "Enter the address")]
-        public string Address { get; set; }
+        [Required]
+        public decimal PaymentAmount { get; set; }
 
-        [Required(ErrorMessage = "Enter the suburb")]
-        public string Suburb { get; set; }
+        [Required(ErrorMessage = "Enter your booking date")]
+        [DataType(DataType.Date)]
+        public DateTime PaymentDate { get; set; }
 
-        [Required(ErrorMessage = "Enter the city")]
-        public string City { get; set; }
-
-        [Required(ErrorMessage = "Enter the postal code")]
-        public string PostalCode { get; set; }
-
-        [Required(ErrorMessage = "Enter the phone number")]
-        public string PhoneNumber { get; set; }
-
+        [Required]
+        public string PaymentStatus { get; set; }
 
         public Booking Booking { get; set; }
     }

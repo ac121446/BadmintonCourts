@@ -22,11 +22,12 @@ namespace BadmintonCourts.Controllers
         // GET: Payments
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Payments.ToListAsync());
+            var badmintonCourtsDbContext = _context.Payments.Include(p => p.Booking);
+            return View(await badmintonCourtsDbContext.ToListAsync());
         }
 
         // GET: Payments/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -34,7 +35,8 @@ namespace BadmintonCourts.Controllers
             }
 
             var payment = await _context.Payments
-                .FirstOrDefaultAsync(m => m.LocationID == id);
+                .Include(p => p.Booking)
+                .FirstOrDefaultAsync(m => m.PaymentID == id);
             if (payment == null)
             {
                 return NotFound();
@@ -46,6 +48,7 @@ namespace BadmintonCourts.Controllers
         // GET: Payments/Create
         public IActionResult Create()
         {
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationID,LocationName,Address,Suburb,City,PostalCode,PhoneNumber")] Payment payment)
+        public async Task<IActionResult> Create([Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
         {
             if (ModelState.IsValid)
             {
@@ -62,11 +65,12 @@ namespace BadmintonCourts.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID", payment.BookingID);
             return View(payment);
         }
 
         // GET: Payments/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -78,6 +82,7 @@ namespace BadmintonCourts.Controllers
             {
                 return NotFound();
             }
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID", payment.BookingID);
             return View(payment);
         }
 
@@ -86,9 +91,9 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationID,LocationName,Address,Suburb,City,PostalCode,PhoneNumber")] Payment payment)
+        public async Task<IActionResult> Edit(string id, [Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
         {
-            if (id != payment.LocationID)
+            if (id != payment.PaymentID)
             {
                 return NotFound();
             }
@@ -102,7 +107,7 @@ namespace BadmintonCourts.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PaymentExists(payment.LocationID))
+                    if (!PaymentExists(payment.PaymentID))
                     {
                         return NotFound();
                     }
@@ -113,11 +118,12 @@ namespace BadmintonCourts.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID", payment.BookingID);
             return View(payment);
         }
 
         // GET: Payments/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -125,7 +131,8 @@ namespace BadmintonCourts.Controllers
             }
 
             var payment = await _context.Payments
-                .FirstOrDefaultAsync(m => m.LocationID == id);
+                .Include(p => p.Booking)
+                .FirstOrDefaultAsync(m => m.PaymentID == id);
             if (payment == null)
             {
                 return NotFound();
@@ -137,7 +144,7 @@ namespace BadmintonCourts.Controllers
         // POST: Payments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var payment = await _context.Payments.FindAsync(id);
             if (payment != null)
@@ -149,9 +156,9 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PaymentExists(int id)
+        private bool PaymentExists(string id)
         {
-            return _context.Payments.Any(e => e.LocationID == id);
+            return _context.Payments.Any(e => e.PaymentID == id);
         }
     }
 }

@@ -71,6 +71,16 @@ namespace BadmintonCourts.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
+            [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Last name must only contain letters, no special characters or spaces.")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "First name must only contain letters, no special characters or spaces.")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required, RegularExpression(@"^\+?\d{1,3}[- ]?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}$", ErrorMessage = "Invalid phone number format (please include +64)")]
+            public string Phone { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
