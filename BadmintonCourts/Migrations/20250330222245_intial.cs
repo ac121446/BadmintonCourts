@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BadmintonCourts.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class intial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,8 +30,8 @@ namespace BadmintonCourts.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -56,14 +56,14 @@ namespace BadmintonCourts.Migrations
                 name: "Equipment",
                 columns: table => new
                 {
-                    EquipmentsID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EquipmentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Equipment", x => x.EquipmentsID);
+                    table.PrimaryKey("PK_Equipment", x => x.EquipmentID);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,11 +72,11 @@ namespace BadmintonCourts.Migrations
                 {
                     LocationsID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Suburb = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LocationName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Suburb = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -197,8 +197,8 @@ namespace BadmintonCourts.Migrations
                     CourtID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocationID = table.Column<int>(type: "int", nullable: false),
-                    CourtName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CourtType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CourtName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    CourtType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
@@ -225,7 +225,7 @@ namespace BadmintonCourts.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EquipmentsID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EquipmentID1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BadmintonCourtsUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -243,30 +243,25 @@ namespace BadmintonCourts.Migrations
                         principalColumn: "CourtID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Booking_Equipment_EquipmentsID",
-                        column: x => x.EquipmentsID,
+                        name: "FK_Booking_Equipment_EquipmentID1",
+                        column: x => x.EquipmentID1,
                         principalTable: "Equipment",
-                        principalColumn: "EquipmentsID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "EquipmentID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Payment",
                 columns: table => new
                 {
-                    LocationID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Suburb = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BookingID = table.Column<int>(type: "int", nullable: false)
+                    PaymentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    BookingID = table.Column<int>(type: "int", nullable: false),
+                    PaymentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payment", x => x.LocationID);
+                    table.PrimaryKey("PK_Payment", x => x.PaymentID);
                     table.ForeignKey(
                         name: "FK_Payment_Booking_BookingID",
                         column: x => x.BookingID,
@@ -325,9 +320,9 @@ namespace BadmintonCourts.Migrations
                 column: "CourtID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Booking_EquipmentsID",
+                name: "IX_Booking_EquipmentID1",
                 table: "Booking",
-                column: "EquipmentsID");
+                column: "EquipmentID1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Court_LocationID",

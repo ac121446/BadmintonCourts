@@ -54,7 +54,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("LocationsID,LocationName,Address,Suburb,City,PostalCode,PhoneNumber")] Location location)
+        public async Task<IActionResult> Create([Bind("LocationsID,LocationName,Addresss,Suburb,City,PostalCode,PhoneNumber")] Location location)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("LocationsID,LocationName,Address,Suburb,City,PostalCode,PhoneNumber")] Location location)
+        public async Task<IActionResult> Edit(int id, [Bind("LocationsID,LocationName,Addresss,Suburb,City,PostalCode,PhoneNumber")] Location location)
         {
             if (id != location.LocationsID)
             {

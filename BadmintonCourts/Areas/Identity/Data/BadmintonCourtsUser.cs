@@ -19,9 +19,8 @@ public class BadmintonCourtsUser : IdentityUser
     [Display(Name = "First Name")]
     public string FirstName { get; set; }
 
-    //User Phone Number field with validation rules, an error message will display if the regular expression (standard NZ phone number) format is not met.
-    [Required, RegularExpression(@"^\+?\d{1,3}[- ]?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}$", ErrorMessage = "Invalid phone number format (please include +64)")]
-    public string PhoneNumber { get; set; }
+   [Required, RegularExpression(@"^\+?\d{1,3}[- ]?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}$", ErrorMessage = "Invalid phone number format (please include +64)")]
+    public string Phone { get; set; }
 
     public ICollection<Booking> Bookings { get; set; }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BadmintonCourts.Migrations
 {
     [DbContext(typeof(BadmintonCourtsDbContext))]
-    [Migration("20250327021548_initial")]
-    partial class initial
+    [Migration("20250330225035_changedmodels")]
+    partial class changedmodels
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,11 +46,13 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -69,8 +71,11 @@ namespace BadmintonCourts.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber")
+                    b.Property<string>("Phone")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
@@ -122,8 +127,7 @@ namespace BadmintonCourts.Migrations
                     b.Property<int>("EquipmentID")
                         .HasColumnType("int");
 
-                    b.Property<string>("EquipmentsID")
-                        .IsRequired()
+                    b.Property<string>("EquipmentID1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("StartTime")
@@ -141,7 +145,7 @@ namespace BadmintonCourts.Migrations
 
                     b.HasIndex("CourtID");
 
-                    b.HasIndex("EquipmentsID");
+                    b.HasIndex("EquipmentID1");
 
                     b.ToTable("Booking", (string)null);
                 });
@@ -156,11 +160,13 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("CourtName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("CourtType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int>("LocationID")
                         .HasColumnType("int");
@@ -177,21 +183,23 @@ namespace BadmintonCourts.Migrations
 
             modelBuilder.Entity("BadmintonRentals.Models.Equipment", b =>
                 {
-                    b.Property<string>("EquipmentsID")
+                    b.Property<string>("EquipmentID")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("EquipmentsID");
+                    b.HasKey("EquipmentID");
 
                     b.ToTable("Equipment", (string)null);
                 });
@@ -204,17 +212,20 @@ namespace BadmintonCourts.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationsID"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Addresss")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("LocationName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -222,11 +233,13 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Suburb")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("LocationsID");
 
@@ -235,40 +248,23 @@ namespace BadmintonCourts.Migrations
 
             modelBuilder.Entity("BadmintonRentals.Models.Payment", b =>
                 {
-                    b.Property<int>("LocationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocationID"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("PaymentID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("BookingID")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
+                    b.Property<decimal>("PaymentAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LocationName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PostalCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Suburb")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LocationID");
+                    b.HasKey("PaymentID");
 
                     b.HasIndex("BookingID");
 
@@ -426,9 +422,7 @@ namespace BadmintonCourts.Migrations
 
                     b.HasOne("BadmintonRentals.Models.Equipment", "Equipment")
                         .WithMany("Bookings")
-                        .HasForeignKey("EquipmentsID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EquipmentID1");
 
                     b.Navigation("Court");
 

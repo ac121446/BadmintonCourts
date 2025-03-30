@@ -48,7 +48,7 @@ namespace BadmintonCourts.Controllers
         // GET: Courts/Create
         public IActionResult Create()
         {
-            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Address");
+            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace BadmintonCourts.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Address", court.LocationID);
+            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss", court.LocationID);
             return View(court);
         }
 
@@ -82,7 +82,7 @@ namespace BadmintonCourts.Controllers
             {
                 return NotFound();
             }
-            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Address", court.LocationID);
+            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss", court.LocationID);
             return View(court);
         }
 
@@ -118,7 +118,7 @@ namespace BadmintonCourts.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Address", court.LocationID);
+            ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss", court.LocationID);
             return View(court);
         }
 

@@ -14,9 +14,9 @@ namespace BadmintonRentals.Models
 
         [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Address must only contain letters, numbers or spaces.")]
         [Display(Name = "Address")]
-        public string Address { get; set; }
+        public string Addresss { get; set; }
 
-        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Suburb must only contain letters, numbers or spaces.")]
+        [Required, MinLength(2), MaxLength(50), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Suburb must only contain letters, numbers or spaces.")]
         [Display(Name = "Suburb")]
         public string Suburb { get; set; }
 
