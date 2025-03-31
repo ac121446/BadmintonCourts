@@ -8,7 +8,7 @@ namespace BadmintonRentals.Models
         [Key]
         public int LocationsID { get; set; }
 
-        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Location Name must only contain letters, numbers or spaces.")]
+        [Required, MinLength(2), MaxLength(50), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Location Name must only contain letters, numbers or spaces.")]
         [Display(Name = "Location Name")]
         public string LocationName { get; set; }
 

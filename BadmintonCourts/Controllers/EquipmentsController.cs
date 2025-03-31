@@ -54,7 +54,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EquipmentID,Name,Type,Price")] Equipment equipment)
+        public async Task<IActionResult> Create([Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("EquipmentID,Name,Type,Price")] Equipment equipment)
+        public async Task<IActionResult> Edit(string id, [Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
         {
             if (id != equipment.EquipmentID)
             {
