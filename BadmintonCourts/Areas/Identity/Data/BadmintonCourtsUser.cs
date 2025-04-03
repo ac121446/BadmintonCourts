@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BadmintonCourts.Areas.Identity.Data;
 
-// Add profile data for application users by adding properties to the BadmintonCourtsUser class
 public class BadmintonCourtsUser : IdentityUser
 {
     //The field is required (cannot be empty).
