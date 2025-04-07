@@ -20,9 +20,15 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Locations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Locations.ToListAsync());
+            var locations = from l in _context.Locations
+                           select l;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                locations = locations.Where(m => m.LocationName.Contains(searchString));
+            }
+            return View(await locations.ToListAsync());
         }
 
         // GET: Locations/Details/5
