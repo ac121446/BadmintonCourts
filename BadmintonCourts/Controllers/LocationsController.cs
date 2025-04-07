@@ -20,15 +20,33 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Locations
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string sortOrder, string searchString)
         {
-            var locations = from l in _context.Locations
-                           select l;
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Addresss" ? "addresss_desc" : "Addresss";
+            ViewData["CurrentFilter"] = searchString;
+            var students = from s in _context.Locations
+                           select s;
             if (!String.IsNullOrEmpty(searchString))
             {
-                locations = locations.Where(m => m.LocationName.Contains(searchString));
+                students = students.Where(s => s.LocationName.Contains(searchString));
             }
-            return View(await locations.ToListAsync());
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    students = students.OrderByDescending(s => s.LocationName);
+                    break;
+                case "Addresss":
+                    students = students.OrderBy(s => s.Addresss);
+                    break;
+                case "addresss_desc":
+                    students = students.OrderByDescending(s => s.Addresss);
+                    break;
+                default:
+                    students = students.OrderBy(s => s.LocationName);
+                    break;
+            }
+            return View(await students.AsNoTracking().ToListAsync());
         }
 
         // GET: Locations/Details/5

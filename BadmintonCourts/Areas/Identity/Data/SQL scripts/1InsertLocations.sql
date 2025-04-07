@@ -1,6 +1,6 @@
 ﻿INSERT INTO Location (LocationName, Addresss, Suburb, City, PostalCode, PhoneNumber)
 VALUES
-('Sunset Plaza', '123 Arena Rd', 'Parnell', 'Auckland', '1010', '09-123-4567'),
+('Rathlambgay', '123 Arena Rd', 'Parnell', 'Auckland', '1010', '09-123-4567'),
 ('Riverside Hub', '456 Court St', 'Te Aro', 'Wellington', '6011', '04-234-5678'),
 ('Mountain View Center', '789 Riccarton Rd', 'Riccarton', 'Christchurch', '8041', '03-876-5432'),
 ('Harborfront Square', '101 George St', 'Central Dunedin', 'Dunedin', '9016', '03-432-1234'),
