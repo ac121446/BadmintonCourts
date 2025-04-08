@@ -8,15 +8,15 @@ namespace BadmintonRentals.Models
         [Key]
         public int LocationsID { get; set; }
 
-        [Required, MinLength(2), MaxLength(50), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Location Name must only contain letters, numbers or spaces.")]
+        [Required, MinLength(2), MaxLength(30), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Location Name must only contain letters, numbers or spaces.")]
         [Display(Name = "Location Name")]
         public string LocationName { get; set; }
 
-        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Address must only contain letters, numbers or spaces.")]
+        [Required, MinLength(2), MaxLength(40), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Address must only contain letters, numbers or spaces.")]
         [Display(Name = "Address")]
         public string Addresss { get; set; }
 
-        [Required, MinLength(2), MaxLength(50), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Suburb must only contain letters, numbers or spaces.")]
+        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Suburb must only contain letters, numbers or spaces.")]
         [Display(Name = "Suburb")]
         public string Suburb { get; set; }
 
@@ -24,7 +24,7 @@ namespace BadmintonRentals.Models
         [Display(Name = "City")]
         public string City { get; set; }
 
-        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Postal code must only contain letters, numbers or spaces.")]
+        [Required, MinLength(2), MaxLength(20), RegularExpression(@"^[0-9]+$", ErrorMessage = "Postal code must only contain numbers.")]
         [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
 
