@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonRentals.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BadmintonCourts.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class PaymentsController : Controller
     {
         private readonly BadmintonCourtsDbContext _context;

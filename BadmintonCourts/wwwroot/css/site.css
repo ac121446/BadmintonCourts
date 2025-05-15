@@ -20,3 +20,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Make the navbar taller */
+.navbar {
+    min-height: 80px; /* Increase as needed */
+}
+
+/* Make the logo larger */
+.navbar-brand img {
+    height: 50px !important; /* Adjust as needed */
+}
+
+/* Make nav links larger */
+.navbar-nav .nav-link {
+    font-size: 1.25rem; /* Adjust as needed */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}

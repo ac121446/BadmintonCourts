@@ -6,7 +6,9 @@ var connectionString = builder.Configuration.GetConnectionString("BadmintonCourt
 
 builder.Services.AddDbContext<BadmintonCourtsDbContext>(options => options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<BadmintonCourtsUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<BadmintonCourtsDbContext>();
+builder.Services.AddDefaultIdentity<BadmintonCourtsUser>(options => options.SignIn.RequireConfirmedAccount = false)
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<BadmintonCourtsDbContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -32,5 +34,39 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var roles = new[] { "Admin","User" };
+
+        foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+        await roleManager.CreateAsync(new IdentityRole(role));
+
+    }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<BadmintonCourtsUser>>();
+
+    string adminEmail = "admin@gmail.com";
+    string adminPassword = "Password123!";
+
+    if(await userManager.FindByEmailAsync(adminEmail) == null)
+    {
+        var user = new BadmintonCourtsUser();
+        user.UserName = adminEmail;
+        user.Email = adminEmail;
+        user.FirstName = "Test";
+        user.LastName = "Admin";
+        user.Phone = "1234567890";
+
+        await userManager.CreateAsync(user, adminPassword);
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+}
 
 app.Run();
