@@ -38,12 +38,12 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var roles = new[] { "Admin","User" };
+    var roles = new[] { "Admin", "User" };
 
-        foreach (var role in roles)
+    foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
-        await roleManager.CreateAsync(new IdentityRole(role));
+            await roleManager.CreateAsync(new IdentityRole(role));
 
     }
 }
@@ -55,7 +55,7 @@ using (var scope = app.Services.CreateScope())
     string adminEmail = "admin@gmail.com";
     string adminPassword = "Password123!";
 
-    if(await userManager.FindByEmailAsync(adminEmail) == null)
+    if (await userManager.FindByEmailAsync(adminEmail) == null)
     {
         var user = new BadmintonCourtsUser();
         user.UserName = adminEmail;
