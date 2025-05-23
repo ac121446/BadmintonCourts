@@ -21,9 +21,11 @@ body {
   margin-bottom: 60px;
 }
 
-/* Make the navbar taller */
 .navbar {
     min-height: 80px; /* Increase as needed */
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    background-color: #808080;
 }
 
 /* Make the logo larger */
@@ -37,3 +39,32 @@ body {
     padding-top: 1rem;
     padding-bottom: 1rem;
 }
+
+
+/* This is for the image on the top of my home page*/
+.homebanner {
+    position: relative;
+    width: 100vw; /* full viewport width */
+    height: 60vh;
+    margin-left: calc(-50vw + 50%);
+    /* Explanation: This centers the full-width section correctly even inside containers */
+
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.homebanner-text {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 20px;
+    max-width: 90%;
+    border-radius: 10px;
+    /* background-color: rgba(0, 0, 0, 0.3); */ /* REMOVE this line or comment it out */
+}
+
+

@@ -8,83 +8,42 @@
     <title>BadmintonCourts - Rent Courts and Equipment</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJ2Q9omj6vF7p65i7tw1y2RQvGly7s6gb0gT3NwvwKfw8zXJkUg1FQOefRo1" crossorigin="anonymous">
 </head>
+
+<section class="homebanner" style="background-image: url('/images/Bcourt.jpg');">
+    <div class="homebanner-text">
+        <h1 class="display-4 fw-bold">Welcome to SmashRentals</h1>
+        <p class="lead">Your go-to destination for convenient and affordable badminton court and equipment rentals.</p>
+        <a href="#booking" class="btn btn-success btn-lg mt-3">Book Now</a>
+    </div>
+</section>
+
 <body>
     <div class="container mt-5">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1>Welcome to BadmintonCourts</h1>
-                <p class="lead mt-3">Your Ultimate Destination for Court Rentals and Equipment</p>
+                <h1>Welcome to Smash Rentals</h1>
+                <p class="lead mt-3">Your go-to destination for convenient and affordable badminton court and equipment rentals.</p>
             </div>
         </div>
         <div class="row mt-5">
             <div class="col-md-12">
                 <p>
-                    Looking for a place to play badminton? Look no further! BadmintonCourts offers convenient and affordable badminton court rentals at multiple locations, making it easy for you to find the perfect spot to play no matter where you are. Whether you're a beginner or a seasoned player, our courts are available for booking at flexible hours to suit your schedule.
+                    Whether you're a beginner or a seasoned player, we make it easy to book courts, rent rackets, and reserve shuttlecocks online in just a few clicks. Perfect for casual games, tournaments, or team practice, SmashRentals helps you focus on the game while we take care of the rest. Game on!
                 </p>
-                <p>
-                    In addition to our top-quality courts, we also provide the option to rent premium badminton equipment, including rackets, shuttlecocks, and more. Forget the hassle of bringing your own gear – we've got you covered!
-                </p>
-
-                <h2 class="mt-4">What We Offer:</h2>
-                <ul class="list-group mt-3">
-                    <li class="list-group-item"><strong>Multiple Locations:</strong> Access badminton courts at various spots around the city, all easily bookable through our website.</li>
-                    <li class="list-group-item"><strong>Court Availability:</strong> Courts available for rent at different times to fit your needs – whether you're playing solo or with a group.</li>
-                    <li class="list-group-item"><strong>High-Quality Equipment Rentals:</strong> Rackets, shuttlecocks, and other accessories available for rent to ensure you have everything you need for a great game.</li>
-                    <li class="list-group-item"><strong>Flexible Pricing:</strong> Affordable and transparent pricing to make your game fun and accessible, without breaking the bank.</li>
-                </ul>
 
                 <p class="mt-4">
-                    Whether you're playing for fun, training for a competition, or just staying active, BadmintonCourts makes it easier than ever to enjoy a game. <strong>Book your court and rent your equipment today!</strong>
+                    Ready to play? <strong>Book your court and rent your equipment today with SmashRentals!</strong>
                 </p>
             </div>
         </div>
     </div>
 </body>
 
-
-<style>
-    #carouselExampleIndicators {
-        max-width: 80%; /* You can adjust this to your needs */
-        margin: 0 auto; /* Center the carousel */
-    }
-
-    .carousel-inner img {
-        max-height: 400px; /* Set a max height for the images */
-        object-fit: cover; /* Ensures images cover the area */
-    }
-</style>
-
-<div id="carouselExampleIndicators" class="carousel slide mt-5">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="~/images/Bcourt.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="~/images/Bcourt.jpg" class="d-block w-100" alt="...">
-        </div>
-        <div class="carousel-item">
-            <img src="~/images/Bcourt.jpg" class="d-block w-100" alt="...">
-        </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
-
 <div class="text-center mt-5">
     <p class="h2">Rent a court here</p>
 </div>
 
+<section id="booking">
 <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
     <form asp-controller="Locations" asp-action="Index" method="get" class="d-flex">
         <div class="form-group d-flex align-items-center">
@@ -101,5 +60,12 @@
         </div>
     </form>
 </div>
+</section>
+
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
 
 
