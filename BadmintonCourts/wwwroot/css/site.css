@@ -21,6 +21,7 @@ body {
   margin-bottom: 60px;
 }
 
+/* This is for my navbar size and logo*/
 .navbar {
     min-height: 80px; /* Increase as needed */
     margin-bottom: 0 !important;
@@ -68,3 +69,72 @@ body {
 }
 
 
+/* This is for the sections of text on homepage with images What we offer*/
+#what-we-offer {
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}   
+
+
+#what-we-offer .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+#what-we-offer .text {
+  flex: 1;
+}
+
+#what-we-offer .image img {
+  width: 100%;
+  height: auto;
+  max-width: 500px; /* Optional: Sets a maximum width */
+  border-radius: 8px;
+}
+
+/* This is for the section of text on home page Our Mission*/
+#our-mission {
+  margin-top: 3rem;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+#our-mission h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+#our-mission .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+#our-mission .text {
+  flex: 1;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+#our-mission .image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+
+
+#search-bar {
+    background-color: #f0f0f0; /* Light gray background */
+    width: 100vw; /* Full viewport width */
+    min-height: 30vh; /* Minimum height of the viewport */
+    margin-left: calc(-50vw + 50%); /* Centers the section horizontally */
+    padding: 20px; /* Optional: Adds padding inside the section */
+}

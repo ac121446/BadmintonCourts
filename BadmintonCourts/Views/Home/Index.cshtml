@@ -13,53 +13,55 @@
     <div class="homebanner-text">
         <h1 class="display-4 fw-bold">Welcome to SmashRentals</h1>
         <p class="lead">Your go-to destination for convenient and affordable badminton court and equipment rentals.</p>
-        <a href="#booking" class="btn btn-success btn-lg mt-3">Book Now</a>
+        <a href="#search-bar" class="btn btn-success btn-lg mt-3">Book Now</a>
     </div>
 </section>
 
-<body>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Welcome to Smash Rentals</h1>
-                <p class="lead mt-3">Your go-to destination for convenient and affordable badminton court and equipment rentals.</p>
-            </div>
+<section id="what-we-offer" class="mt-5">
+    <h2>What We Offer</h2>
+    <div class="content">
+        <div class="text">
+            <ul>
+                <li><strong>Quick & Easy Online Bookings:</strong> Reserve your court in just a few clicks, anytime, anywhere.</li>
+                <li><strong>Affordable Rates:</strong> Enjoy competitive pricing with flexible options to suit your budget.</li>
+                <li><strong>Well-Maintained Courts:</strong> Play on clean, high-quality courts designed for optimal performance.</li>
+                <li><strong>Equipment Rentals Available:</strong> Need gear? We offer racket and shuttle rentals to enhance your game.</li>
+                <li><strong>Multiple Convenient Locations:</strong> Choose from various locations that fit your schedule and preferences.</li>
+            </ul>
         </div>
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <p>
-                    Whether you're a beginner or a seasoned player, we make it easy to book courts, rent rackets, and reserve shuttlecocks online in just a few clicks. Perfect for casual games, tournaments, or team practice, SmashRentals helps you focus on the game while we take care of the rest. Game on!
-                </p>
-
-                <p class="mt-4">
-                    Ready to play? <strong>Book your court and rent your equipment today with SmashRentals!</strong>
-                </p>
-            </div>
+        <div class="image">
+            <img src="~/images/Bcourt.jpg" alt="Badminton court" />
         </div>
     </div>
-</body>
+</section>
 
-<div class="text-center mt-5">
-    <p class="h2">Rent a court here</p>
-</div>
-
-<section id="booking">
-<div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
-    <form asp-controller="Locations" asp-action="Index" method="get" class="d-flex">
-        <div class="form-group d-flex align-items-center">
-            <input type="text"
-                   name="SearchString"
-                   class="form-control"
-                   style="width: 600px; height: 70px; font-size: 1.5rem;"
-                   placeholder="Enter location"
-                   value="@ViewData["CurrentFilter"]" />
-            <input type="submit"
-                   value="Search"
-                   class="btn btn-primary ms-3"
-                   style="height: 70px; font-size: 1.5rem; padding: 0 40px;" />
+<section id="our-mission" class="mt-3">
+    <h2>Our Mission</h2>
+    <div class="content">
+        <div class="image">
+            <img src="~/images/Bcourt.jpg" alt="Badminton court" />
         </div>
-    </form>
-</div>
+        <div class="text">
+            <p>Our mission is to provide accessible, high-quality badminton facilities that foster community engagement, promote active lifestyles, and offer an enjoyable experience for players of all levels.</p>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="search-bar" class="mt-5">
+    <div class="text-center mt-5">
+        <p class="h2">Rent a court here</p>
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
+        <form asp-controller="Locations" asp-action="Index" method="get" class="d-flex">
+            <div class="form-group d-flex align-items-center">
+                <input type="text" name="SearchString" class="form-control" style="width: 600px; height: 70px; font-size: 1.5rem;" placeholder="Enter location" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-primary ms-3" style="height: 70px; font-size: 1.5rem; padding: 0 40px;" />
+            </div>
+        </form>
+    </div>
 </section>
 
 <style>
