@@ -179,5 +179,19 @@ namespace BadmintonCourts.Controllers
         {
             return _context.Locations.Any(e => e.LocationsID == id);
         }
+
+        [HttpGet]
+        public JsonResult GetMatchingLocations(string term)
+        {
+            var matches = _context.Locations
+                .Where(l => l.LocationName.Contains(term))
+                .Select(l => l.LocationName)
+                .Take(10)
+                .ToList();
+
+            return Json(matches);
+        }
+
     }
 }
+

@@ -2,6 +2,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,15 +56,62 @@
         <p class="h2">Rent a court here</p>
     </div>
 
-    <div class="d-flex justify-content-center align-items-center" style="height: 10vh;">
-        <form asp-controller="Locations" asp-action="Index" method="get" class="d-flex">
-            <div class="form-group d-flex align-items-center">
-                <input type="text" name="SearchString" class="form-control" style="width: 600px; height: 70px; font-size: 1.5rem;" placeholder="Enter location" value="@ViewData["CurrentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-primary ms-3" style="height: 70px; font-size: 1.5rem; padding: 0 40px;" />
+    <div class="d-flex justify-content-center mt-3">
+        <form asp-controller="Locations" asp-action="Index" method="get" class="d-flex" style="gap: 10px;">
+            <!-- Input and dropdown wrapper -->
+            <div class="position-relative" style="width: 600px;">
+                <input type="text" id="locationSearch" name="SearchString" class="form-control"
+                       style="height: 70px; font-size: 1.5rem;" placeholder="Enter location" autocomplete="off" />
+                <!-- Autocomplete Dropdown -->
+                <ul id="searchSuggestions"
+                    class="list-group position-absolute"
+                    style="top: 70px; width: 100%; z-index: 1000; max-height: 200px; overflow-y: auto;"></ul>
             </div>
+
+            <!-- Submit button next to input -->
+            <input type="submit" value="Search" class="btn btn-primary"
+                   style="height: 70px; font-size: 1.5rem; padding: 0 40px;" />
         </form>
     </div>
 </section>
+
+
+<script>
+    $(document).ready(function () {
+        $('#locationSearch').on('input', function () {
+            let query = $(this).val();
+
+            if (query.length < 1) {
+                $('#searchSuggestions').empty();
+                return;
+            }
+
+            $.ajax({
+                url: '/Locations/GetMatchingLocations',
+                data: { term: query },
+                success: function (data) {
+                    $('#searchSuggestions').empty();
+                    data.forEach(function (item) {
+                        $('#searchSuggestions').append(`<li class="list-group-item list-group-item-action">${item}</li>`);
+                    });
+
+                    // Allow clicking suggestion to auto-fill input
+                    $('.list-group-item').on('click', function () {
+                        $('#locationSearch').val($(this).text());
+                        $('#searchSuggestions').empty();
+                    });
+                }
+            });
+        });
+
+        // Optional: Hide dropdown when clicking outside
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#locationSearch, #searchSuggestions').length) {
+                $('#searchSuggestions').empty();
+            }
+        });
+    });
+</script>
 
 <style>
     html {

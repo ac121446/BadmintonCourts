@@ -138,3 +138,21 @@ body {
     margin-left: calc(-50vw + 50%); /* Centers the section horizontally */
     padding: 20px; /* Optional: Adds padding inside the section */
 }
+
+
+.center-container {
+    display: flex;
+    justify-content: center; /* center horizontally */
+    align-items: center; /* center vertically */
+    padding: 30px; /* space around on smaller screens */
+}
+
+.center-inner {
+    width: 100%;
+    max-width: 500px; /* control form width */
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
