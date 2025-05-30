@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 #nullable disable
 
@@ -32,7 +33,7 @@ namespace BadmintonCourts.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -41,6 +42,7 @@ namespace BadmintonCourts.Migrations
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
@@ -57,9 +59,9 @@ namespace BadmintonCourts.Migrations
                 columns: table => new
                 {
                     EquipmentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    EName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    EPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,8 +74,8 @@ namespace BadmintonCourts.Migrations
                 {
                     LocationsID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LocationName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    LocationName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    Addresss = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Suburb = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     City = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     PostalCode = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),

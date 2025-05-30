@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BadmintonCourts.Migrations
 {
     [DbContext(typeof(BadmintonCourtsDbContext))]
-    [Migration("20250331214331_changednames")]
-    partial class changednames
+    [Migration("20250530014212_intial")]
+    partial class intial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,8 +188,8 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("EName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("EPrice")
                         .HasColumnType("decimal(18,2)");
@@ -214,8 +214,8 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("Addresss")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
 
                     b.Property<string>("City")
                         .IsRequired()
@@ -224,8 +224,8 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("LocationName")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -238,8 +238,8 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<string>("Suburb")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("LocationsID");
 

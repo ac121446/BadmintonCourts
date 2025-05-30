@@ -1,15 +1,15 @@
 ﻿INSERT INTO AspNetUsers 
-(Id, LastName, FirstName, PhoneNumber, UserName, NormalizedUserName, Email, NormalizedEmail, 
-EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, 
+(Id, LastName, FirstName, Phone, UserName, NormalizedUserName, Email, NormalizedEmail, 
+EmailConfirmed, PasswordHash, SecurityStamp, ConcurrencyStamp, PhoneNumber,
 PhoneNumberConfirmed, TwoFactorEnabled, LockoutEnd, LockoutEnabled, AccessFailedCount) 
 VALUES
-('1', 'Smith', 'John', '123-456-7890', 'johnsmith', 'JOHNSMITH', 'john@example.com', 'JOHN@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE123456...', 'ABCDEF123', 'XYZ987654', 1, 0, NULL, 1, 0),
-('2', 'Johnson', 'Emily', '234-567-8901', 'emilyjohnson', 'EMILYJOHNSON', 'emily@example.com', 'EMILY@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE654321...', 'GHIJKL456', 'LMN789012', 1, 0, NULL, 1, 0),
-('3', 'Brown', 'Michael', '345-678-9012', 'michaelbrown', 'MICHAELBROWN', 'michael@example.com', 'MICHAEL@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE789123...', 'MNOPQR789', 'UVW123456', 1, 0, NULL, 1, 0),
-('4', 'Davis', 'Sophia', '456-789-0123', 'sophiadavis', 'SOPHIADAVIS', 'sophia@example.com', 'SOPHIA@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE456789...', 'STUVWX012', 'ABC345678', 1, 0, NULL, 1, 0),
-('5', 'Wilson', 'Daniel', '567-890-1234', 'danielwilson', 'DANIELWILSON', 'daniel@example.com', 'DANIEL@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE012345...', 'YZABC6789', 'DEF901234', 1, 0, NULL, 1, 0),
-('6', 'Martinez', 'Olivia', '678-901-2345', 'oliviamartinez', 'OLIVIAMARTINEZ', 'olivia@example.com', 'OLIVIA@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE987654...', 'GHIJKL321', 'MNO543210', 1, 0, NULL, 1, 0),
-('7', 'Anderson', 'William', '789-012-3456', 'williamanderson', 'WILLIAMANDERSON', 'william@example.com', 'WILLIAM@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE321987...', 'PQRSTU456', 'VWX789012', 1, 0, NULL, 1, 0),
-('8', 'Garcia', 'Isabella', '890-123-4567', 'isabellagarcia', 'ISABELLAGARCIA', 'isabella@example.com', 'ISABELLA@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE654789...', 'YZABC1234', 'DEF567890', 1, 0, NULL, 1, 0),
-('9', 'Lopez', 'James', '901-234-5678', 'jameslopez', 'JAMESLOPEZ', 'james@example.com', 'JAMES@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE852963...', 'MNOXYZ456', 'UVW098765', 1, 0, NULL, 1, 0),
-('10', 'Taylor', 'Mia', '012-345-6789', 'miataylor', 'MIATAYLOR', 'mia@example.com', 'MIA@EXAMPLE.COM', 1, 'AQAAAAIAAYagAAAAE741258...', 'ABCPQR123', 'GHI345678', 1, 0, NULL, 1, 0);
+('c1e1f5a1-8a64-4f56-8b8e-a12345678901', 'Smith', 'John', '555-0001', 'jsmith', 'JSMITH', 'john.smith@example.com', 'JOHN.SMITH@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH1', 'stamp1', 'concurrency1', '555-0001', 1, 0, NULL, 1, 0),
+('d2e2f6b2-9b75-4f67-9c9f-b23456789012', 'Johnson', 'Mary', '555-0002', 'mjohnson', 'MJOHNSON', 'mary.johnson@example.com', 'MARY.JOHNSON@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH2', 'stamp2', 'concurrency2', '555-0002', 1, 0, NULL, 1, 0),
+('e3f3g7c3-ac86-5g78-adad-c34567890123', 'Brown', 'James', '555-0003', 'jbrown', 'JBROWN', 'james.brown@example.com', 'JAMES.BROWN@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH3', 'stamp3', 'concurrency3', '555-0003', 1, 0, NULL, 1, 0),
+('f4g4h8d4-bd97-6h89-bebe-d45678901234', 'Taylor', 'Linda', '555-0004', 'ltaylor', 'LTAYLOR', 'linda.taylor@example.com', 'LINDA.TAYLOR@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH4', 'stamp4', 'concurrency4', '555-0004', 1, 0, NULL, 1, 0),
+('a5h5i9e5-cea8-7i90-cfcf-e56789012345', 'Anderson', 'Robert', '555-0005', 'randerson', 'RANDERSON', 'robert.anderson@example.com', 'ROBERT.ANDERSON@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH5', 'stamp5', 'concurrency5', '555-0005', 1, 0, NULL, 1, 0),
+('b6i6j0f6-dfb9-8j01-dgdg-f67890123456', 'Martinez', 'Susan', '555-0006', 'smartinez', 'SMARTINEZ', 'susan.martinez@example.com', 'SUSAN.MARTINEZ@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH6', 'stamp6', 'concurrency6', '555-0006', 1, 0, NULL, 1, 0),
+('c7j7k1g7-ec0a-9k12-ehehe-067890123457', 'Garcia', 'Michael', '555-0007', 'mgarcia', 'MGARCIA', 'michael.garcia@example.com', 'MICHAEL.GARCIA@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH7', 'stamp7', 'concurrency7', '555-0007', 1, 0, NULL, 1, 0),
+('d8k8l2h8-fd1b-ak23-fifi-178901234568', 'Lee', 'Karen', '555-0008', 'klee', 'KLEE', 'karen.lee@example.com', 'KAREN.LEE@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH8', 'stamp8', 'concurrency8', '555-0008', 1, 0, NULL, 1, 0),
+('e9l9m3i9-ge2c-bl34-gogo-289012345679', 'Clark', 'David', '555-0009', 'dclark', 'DCLARK', 'david.clark@example.com', 'DAVID.CLARK@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH9', 'stamp9', 'concurrency9', '555-0009', 1, 0, NULL, 1, 0),
+('f0m0n4j0-hf3d-cm45-hphp-390123456780', 'Lewis', 'Patricia', '555-0010', 'plewis', 'PLEWIS', 'patricia.lewis@example.com', 'PATRICIA.LEWIS@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEEXAMPLEHASH10', 'stamp10', 'concurrency10', '555-0010', 1, 0, NULL, 1, 0);
