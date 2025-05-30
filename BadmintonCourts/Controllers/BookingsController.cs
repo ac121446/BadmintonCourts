@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace BadmintonCourts.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class BookingsController : Controller
     {
         private readonly BadmintonCourtsDbContext _context;
