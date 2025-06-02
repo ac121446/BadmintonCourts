@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using BadmintonRentals.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.General;
+using BadmintonCourts.Areas.Identity.Data;
 
 namespace BadmintonCourts.Models
 {
@@ -38,6 +40,7 @@ namespace BadmintonCourts.Models
         public ICollection<Payment> Payments { get; set; }
         public Court Court { get; set; }
         public Equipment Equipment { get; set; }
+        public BadmintonCourtsUser BadmintonCourtsUser { get; set; }
 
 
     }
