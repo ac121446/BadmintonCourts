@@ -60,7 +60,7 @@ namespace BadmintonCourts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CourtID,LocationID,CourtName,CourtType,Price")] Court court)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 _context.Add(court);
                 await _context.SaveChangesAsync();
@@ -99,7 +99,7 @@ namespace BadmintonCourts.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
