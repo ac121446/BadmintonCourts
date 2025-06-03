@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BadmintonCourts.Migrations
 {
     [DbContext(typeof(BadmintonCourtsDbContext))]
-    [Migration("20250530014212_intial")]
+    [Migration("20250603214340_intial")]
     partial class intial
     {
         /// <inheritdoc />
@@ -410,7 +410,7 @@ namespace BadmintonCourts.Migrations
 
             modelBuilder.Entity("BadmintonCourts.Models.Booking", b =>
                 {
-                    b.HasOne("BadmintonCourts.Areas.Identity.Data.BadmintonCourtsUser", null)
+                    b.HasOne("BadmintonCourts.Areas.Identity.Data.BadmintonCourtsUser", "BadmintonCourtsUser")
                         .WithMany("Bookings")
                         .HasForeignKey("BadmintonCourtsUserId");
 
@@ -423,6 +423,8 @@ namespace BadmintonCourts.Migrations
                     b.HasOne("BadmintonRentals.Models.Equipment", "Equipment")
                         .WithMany("Bookings")
                         .HasForeignKey("EquipmentID1");
+
+                    b.Navigation("BadmintonCourtsUser");
 
                     b.Navigation("Court");
 

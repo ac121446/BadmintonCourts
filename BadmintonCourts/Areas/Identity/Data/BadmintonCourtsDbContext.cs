@@ -18,6 +18,7 @@ public class BadmintonCourtsDbContext : IdentityDbContext<BadmintonCourtsUser>
     public DbSet<Equipment> Equipments { get; set; }
     public DbSet<Location> Locations { get; set; }
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<BadmintonCourtsUser> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

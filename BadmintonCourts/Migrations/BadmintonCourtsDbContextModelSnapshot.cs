@@ -407,7 +407,7 @@ namespace BadmintonCourts.Migrations
 
             modelBuilder.Entity("BadmintonCourts.Models.Booking", b =>
                 {
-                    b.HasOne("BadmintonCourts.Areas.Identity.Data.BadmintonCourtsUser", null)
+                    b.HasOne("BadmintonCourts.Areas.Identity.Data.BadmintonCourtsUser", "BadmintonCourtsUser")
                         .WithMany("Bookings")
                         .HasForeignKey("BadmintonCourtsUserId");
 
@@ -420,6 +420,8 @@ namespace BadmintonCourts.Migrations
                     b.HasOne("BadmintonRentals.Models.Equipment", "Equipment")
                         .WithMany("Bookings")
                         .HasForeignKey("EquipmentID1");
+
+                    b.Navigation("BadmintonCourtsUser");
 
                     b.Navigation("Court");
 
