@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BadmintonCourts.Migrations
 {
     /// <inheritdoc />
-    public partial class intial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,7 +57,8 @@ namespace BadmintonCourts.Migrations
                 name: "Equipment",
                 columns: table => new
                 {
-                    EquipmentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EquipmentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     EType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     EPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
@@ -226,7 +227,6 @@ namespace BadmintonCourts.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EquipmentID1 = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     BadmintonCourtsUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -244,17 +244,19 @@ namespace BadmintonCourts.Migrations
                         principalColumn: "CourtID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Booking_Equipment_EquipmentID1",
-                        column: x => x.EquipmentID1,
+                        name: "FK_Booking_Equipment_EquipmentID",
+                        column: x => x.EquipmentID,
                         principalTable: "Equipment",
-                        principalColumn: "EquipmentID");
+                        principalColumn: "EquipmentID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Payment",
                 columns: table => new
                 {
-                    PaymentID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    PaymentID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     BookingID = table.Column<int>(type: "int", nullable: false),
                     PaymentAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -321,9 +323,9 @@ namespace BadmintonCourts.Migrations
                 column: "CourtID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Booking_EquipmentID1",
+                name: "IX_Booking_EquipmentID",
                 table: "Booking",
-                column: "EquipmentID1");
+                column: "EquipmentID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Court_LocationID",

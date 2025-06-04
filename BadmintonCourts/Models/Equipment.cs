@@ -6,7 +6,7 @@ namespace BadmintonRentals.Models
     public class Equipment
     {
         [Key]
-        public string EquipmentID { get; set; }
+        public int EquipmentID { get; set; }
 
         [Required, MinLength(2), MaxLength(50), RegularExpression(@"^[a-zA-Z0-9 ]+$", ErrorMessage = "Equipment name must only contain letters, numbers or spaces.")]
         [Display(Name = "Equipment Name")]

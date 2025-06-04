@@ -124,9 +124,6 @@ namespace BadmintonCourts.Migrations
                     b.Property<int>("EquipmentID")
                         .HasColumnType("int");
 
-                    b.Property<string>("EquipmentID1")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
@@ -142,7 +139,7 @@ namespace BadmintonCourts.Migrations
 
                     b.HasIndex("CourtID");
 
-                    b.HasIndex("EquipmentID1");
+                    b.HasIndex("EquipmentID");
 
                     b.ToTable("Booking", (string)null);
                 });
@@ -180,8 +177,11 @@ namespace BadmintonCourts.Migrations
 
             modelBuilder.Entity("BadmintonRentals.Models.Equipment", b =>
                 {
-                    b.Property<string>("EquipmentID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("EquipmentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipmentID"));
 
                     b.Property<string>("EName")
                         .IsRequired()
@@ -245,8 +245,11 @@ namespace BadmintonCourts.Migrations
 
             modelBuilder.Entity("BadmintonRentals.Models.Payment", b =>
                 {
-                    b.Property<string>("PaymentID")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PaymentID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentID"));
 
                     b.Property<int>("BookingID")
                         .HasColumnType("int");
@@ -419,7 +422,9 @@ namespace BadmintonCourts.Migrations
 
                     b.HasOne("BadmintonRentals.Models.Equipment", "Equipment")
                         .WithMany("Bookings")
-                        .HasForeignKey("EquipmentID1");
+                        .HasForeignKey("EquipmentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("BadmintonCourtsUser");
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonRentals.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BadmintonCourts.Controllers
 {
@@ -28,7 +27,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Payments/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -60,7 +59,7 @@ namespace BadmintonCourts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(payment);
                 await _context.SaveChangesAsync();
@@ -71,7 +70,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Payments/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -92,14 +91,14 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
+        public async Task<IActionResult> Edit(int id, [Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
         {
             if (id != payment.PaymentID)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -124,7 +123,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Payments/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -145,7 +144,7 @@ namespace BadmintonCourts.Controllers
         // POST: Payments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var payment = await _context.Payments.FindAsync(id);
             if (payment != null)
@@ -157,7 +156,7 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PaymentExists(string id)
+        private bool PaymentExists(int id)
         {
             return _context.Payments.Any(e => e.PaymentID == id);
         }

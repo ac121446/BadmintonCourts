@@ -22,7 +22,7 @@ namespace BadmintonCourts.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var badmintonCourtsDbContext = _context.Bookings.Include(b => b.Court);                     
+            var badmintonCourtsDbContext = _context.Bookings.Include(b => b.Court);
             return View(await badmintonCourtsDbContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace BadmintonCourts.Controllers
 
             var booking = await _context.Bookings
                 .Include(b => b.Court)
-                .Include(b => b.BadmintonCourtsUser)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
             if (booking == null)
             {
@@ -50,7 +49,6 @@ namespace BadmintonCourts.Controllers
         public IActionResult Create()
         {
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName");
-            ViewData["UserID"] = new SelectList(_context.Bad, "UserID", "CourtName");
             return View();
         }
 

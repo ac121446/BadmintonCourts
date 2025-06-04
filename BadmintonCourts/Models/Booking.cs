@@ -14,7 +14,7 @@ namespace BadmintonCourts.Models
         public int BookingID { get; set; }
 
         [ForeignKey("UserID"), Required]
-        public string UserID { get; set; }
+        public int UserID { get; set; }
 
         [ForeignKey("CourtID"), Required]
         public int CourtID { get; set; }

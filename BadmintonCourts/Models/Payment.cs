@@ -7,7 +7,7 @@ namespace BadmintonRentals.Models
     public class Payment
     {
         [Key]
-        public string PaymentID { get; set; }
+        public int PaymentID { get; set; }
 
         [ForeignKey("BookingID"), Required]
         public int BookingID { get; set; }

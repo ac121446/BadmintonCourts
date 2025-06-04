@@ -38,18 +38,18 @@ VALUES
 (5, 'Johnson', 'Chris', '+1230984567', 'cjohnson', 'CJOHNSON', 'chris.johnson@example.com', 'CHRIS.JOHNSON@EXAMPLE.COM', 1, 'AQAAAAEAACcQAAAAEMX9wZ...', 'stamp5', 'concstamp5', '+1230984567', 1, 1, NULL, 1, 2);
 GO
 
-INSERT INTO Equipment (EquipmentID, EName, EType, EPrice)
+INSERT INTO Equipment (EName, EType, EPrice)
 VALUES
-(1, 'Yonex Astrox 88D Pro', 'Racket', 5.00),
-(2, 'Victor Thruster Ryuga II', 'Racket', 4.50),
-(3, 'Li-Ning Aeronaut 9000C', 'Racket', 4.00),
-(4, 'Babolat Satelite Gravity 74', 'Racket', 3.50),
-(5, 'Carlton Kinesis X900', 'Racket', 3.00),
-(6, 'Yonex Aerosensa 50', 'Shuttlecock', 30.00),
-(7, 'Victor Master No.1', 'Shuttlecock', 28.00),
-(8, 'Li-Ning A+600', 'Shuttlecock', 25.00),
-(9, 'RSL Tourney No.1', 'Shuttlecock', 27.00),
-(10, 'FeatherFlex Pro 12', 'Shuttlecock', 20.00);
+('Yonex Astrox 88D Pro', 'Racket', 5.00),
+('Victor Thruster Ryuga II', 'Racket', 4.50),
+('Li-Ning Aeronaut 9000C', 'Racket', 4.00),
+('Babolat Satelite Gravity 74', 'Racket', 3.50),
+('Carlton Kinesis X900', 'Racket', 3.00),
+('Yonex Aerosensa 50', 'Shuttlecock', 30.00),
+('Victor Master No.1', 'Shuttlecock', 28.00),
+('Li-Ning A+600', 'Shuttlecock', 25.00),
+('RSL Tourney No.1', 'Shuttlecock', 27.00),
+('FeatherFlex Pro 12', 'Shuttlecock', 20.00);
 GO
 
 INSERT INTO Booking (UserID, CourtID, EquipmentID, BookingDate, StartTime, EndTime, TotalPrice)
@@ -66,16 +66,16 @@ VALUES
 (10, 4, 5, '2025-04-10', '17:00:00', '19:00:00', 60.00);
 GO
 
-INSERT INTO Payment (PaymentID, BookingID, PaymentAmount, PaymentDate, PaymentStatus)
+INSERT INTO Payment (BookingID, PaymentAmount, PaymentDate, PaymentStatus)
 VALUES
-(1, 1, 20.00, '2024-03-25', 'Paid'),
-(2, 2, 15.00, '2024-03-26', 'Paid'),
-(3, 3, 30.00, '2024-03-27', 'Pending'),
-(4, 4, 25.00, '2024-03-28', 'Paid'),
-(5, 5, 18.00, '2024-03-29', 'Paid'),
-(6, 6, 22.00, '2024-03-30', 'Pending'),
-(7, 7, 28.00, '2024-03-31', 'Paid'),
-(8, 8, 35.00, '2024-04-01', 'Paid'),
-(9, 9, 12.00, '2024-04-02', 'Pending'),
-(10, 10, 40.00, '2024-04-03', 'Paid');
+(1, 20.00, '2024-03-25', 'Paid'),
+(2, 15.00, '2024-03-26', 'Paid'),
+(3, 30.00, '2024-03-27', 'Pending'),
+(4, 25.00, '2024-03-28', 'Paid'),
+(5, 18.00, '2024-03-29', 'Paid'),
+(6, 22.00, '2024-03-30', 'Pending'),
+(7, 28.00, '2024-03-31', 'Paid'),
+(8, 35.00, '2024-04-01', 'Paid'),
+(9, 12.00, '2024-04-02', 'Pending'),
+(10, 40.00, '2024-04-03', 'Paid');
 GO

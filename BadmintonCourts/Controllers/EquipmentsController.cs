@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonRentals.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BadmintonCourts.Controllers
 {
@@ -27,7 +26,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Equipments/Details/5
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -57,7 +56,7 @@ namespace BadmintonCourts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(equipment);
                 await _context.SaveChangesAsync();
@@ -67,7 +66,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Equipments/Edit/5
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -87,14 +86,14 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
+        public async Task<IActionResult> Edit(int id, [Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
         {
             if (id != equipment.EquipmentID)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
@@ -118,7 +117,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Equipments/Delete/5
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -138,7 +137,7 @@ namespace BadmintonCourts.Controllers
         // POST: Equipments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var equipment = await _context.Equipments.FindAsync(id);
             if (equipment != null)
@@ -150,7 +149,7 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EquipmentExists(string id)
+        private bool EquipmentExists(int id)
         {
             return _context.Equipments.Any(e => e.EquipmentID == id);
         }
