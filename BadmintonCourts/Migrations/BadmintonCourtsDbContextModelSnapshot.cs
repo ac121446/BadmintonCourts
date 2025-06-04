@@ -110,6 +110,7 @@ namespace BadmintonCourts.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingID"));
 
                     b.Property<string>("BadmintonCourtsUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("BookingDate")
@@ -129,9 +130,6 @@ namespace BadmintonCourts.Migrations
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserID")
-                        .HasColumnType("int");
 
                     b.HasKey("BookingID");
 
@@ -412,7 +410,9 @@ namespace BadmintonCourts.Migrations
                 {
                     b.HasOne("BadmintonCourts.Areas.Identity.Data.BadmintonCourtsUser", "BadmintonCourtsUser")
                         .WithMany("Bookings")
-                        .HasForeignKey("BadmintonCourtsUserId");
+                        .HasForeignKey("BadmintonCourtsUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BadmintonRentals.Models.Court", "Court")
                         .WithMany("Bookings")

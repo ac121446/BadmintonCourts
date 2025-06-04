@@ -220,14 +220,13 @@ namespace BadmintonCourts.Migrations
                 {
                     BookingID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserID = table.Column<int>(type: "int", nullable: false),
+                    BadmintonCourtsUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     CourtID = table.Column<int>(type: "int", nullable: false),
                     EquipmentID = table.Column<int>(type: "int", nullable: false),
                     BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    BadmintonCourtsUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -236,7 +235,8 @@ namespace BadmintonCourts.Migrations
                         name: "FK_Booking_AspNetUsers_BadmintonCourtsUserId",
                         column: x => x.BadmintonCourtsUserId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Booking_Court_CourtID",
                         column: x => x.CourtID,

@@ -22,7 +22,7 @@ namespace BadmintonCourts.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var badmintonCourtsDbContext = _context.Bookings.Include(b => b.Court);
+            var badmintonCourtsDbContext = _context.Bookings.Include(b => b.BadmintonCourtsUser).Include(b => b.Court).Include(b => b.Equipment);
             return View(await badmintonCourtsDbContext.ToListAsync());
         }
 
@@ -35,7 +35,9 @@ namespace BadmintonCourts.Controllers
             }
 
             var booking = await _context.Bookings
+                .Include(b => b.BadmintonCourtsUser)
                 .Include(b => b.Court)
+                .Include(b => b.Equipment)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
             if (booking == null)
             {
@@ -48,7 +50,9 @@ namespace BadmintonCourts.Controllers
         // GET: Bookings/Create
         public IActionResult Create()
         {
+            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName");
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName");
             return View();
         }
 
@@ -57,7 +61,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BookingID,UserID,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
+        public async Task<IActionResult> Create([Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +69,9 @@ namespace BadmintonCourts.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "Id", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
             return View(booking);
         }
 
@@ -82,7 +88,9 @@ namespace BadmintonCourts.Controllers
             {
                 return NotFound();
             }
+            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "Id", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
             return View(booking);
         }
 
@@ -91,7 +99,7 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BookingID,UserID,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
+        public async Task<IActionResult> Edit(int id, [Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
         {
             if (id != booking.BookingID)
             {
@@ -118,7 +126,9 @@ namespace BadmintonCourts.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "Id", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
             return View(booking);
         }
 
@@ -131,7 +141,9 @@ namespace BadmintonCourts.Controllers
             }
 
             var booking = await _context.Bookings
+                .Include(b => b.BadmintonCourtsUser)
                 .Include(b => b.Court)
+                .Include(b => b.Equipment)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
             if (booking == null)
             {
