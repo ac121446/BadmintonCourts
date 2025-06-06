@@ -18,6 +18,15 @@
         </p>
     </div>
 </form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        You currently have no locations, click "Create New" to make a location.
+    </div>
+}
+
+else{
 <table class="table table-hover">
     <thead>
         <tr>
@@ -72,3 +81,4 @@
 }
     </tbody>
 </table>
+}

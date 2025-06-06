@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
 
 namespace BadmintonCourts.Controllers
 {
@@ -23,8 +24,20 @@ namespace BadmintonCourts.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var badmintonCourtsDbContext = _context.Bookings.Include(b => b.BadmintonCourtsUser).Include(b => b.Court).Include(b => b.Equipment);
-            return View(await badmintonCourtsDbContext.ToListAsync());
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
+            IQueryable<Booking> bookingsQuery = _context.Bookings
+                .Include(b => b.BadmintonCourtsUser)
+                .Include(b => b.Court)
+                .Include(b => b.Equipment);
+
+            if (!User.IsInRole("Admin"))
+            {
+                //Filter bookings for non-admin users to only see their own bookings
+                bookingsQuery = bookingsQuery.Where(b => b.BadmintonCourtsUserId == userId);
+            }
+            var bookings = await bookingsQuery.ToListAsync();
+            return View(bookings);
         }
 
         // GET: Bookings/Details/5
