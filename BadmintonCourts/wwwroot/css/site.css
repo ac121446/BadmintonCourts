@@ -156,3 +156,33 @@ body {
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
+.login-text {
+    text-decoration: none; /* Remove underline by default */
+}
+
+.login-text:hover {
+    text-decoration: underline; /* Underline only on hover */
+}
+
+.hover-underline-animation {
+  display: inline-block;
+  position: relative;
+}
+
+.hover-underline-animation::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 10px; /* move underline closer */
+  left: 0;
+  background-color: #0087ca;
+  transform-origin: bottom center;
+  transition: transform 0.25s ease-out;
+}
+
+.hover-underline-animation:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom center;
+}
