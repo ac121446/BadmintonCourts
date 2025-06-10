@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
-using BadmintonRentals.Models;
+using BadmintonCourts.Models;
 
 namespace BadmintonCourts.Controllers
 {
@@ -48,7 +48,7 @@ namespace BadmintonCourts.Controllers
         // GET: Payments/Create
         public IActionResult Create()
         {
-            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID");
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BadmintonCourtsUserId");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace BadmintonCourts.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID", payment.BookingID);
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BadmintonCourtsUserId", payment.BookingID);
             return View(payment);
         }
 
@@ -82,7 +82,7 @@ namespace BadmintonCourts.Controllers
             {
                 return NotFound();
             }
-            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID", payment.BookingID);
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BadmintonCourtsUserId", payment.BookingID);
             return View(payment);
         }
 
@@ -118,7 +118,7 @@ namespace BadmintonCourts.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BookingID", payment.BookingID);
+            ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BadmintonCourtsUserId", payment.BookingID);
             return View(payment);
         }
 

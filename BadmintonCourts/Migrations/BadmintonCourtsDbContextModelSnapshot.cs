@@ -142,7 +142,7 @@ namespace BadmintonCourts.Migrations
                     b.ToTable("Booking", (string)null);
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Court", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Court", b =>
                 {
                     b.Property<int>("CourtID")
                         .ValueGeneratedOnAdd()
@@ -173,7 +173,7 @@ namespace BadmintonCourts.Migrations
                     b.ToTable("Court", (string)null);
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Equipment", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Equipment", b =>
                 {
                     b.Property<int>("EquipmentID")
                         .ValueGeneratedOnAdd()
@@ -199,7 +199,7 @@ namespace BadmintonCourts.Migrations
                     b.ToTable("Equipment", (string)null);
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Location", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Location", b =>
                 {
                     b.Property<int>("LocationsID")
                         .ValueGeneratedOnAdd()
@@ -241,7 +241,7 @@ namespace BadmintonCourts.Migrations
                     b.ToTable("Location", (string)null);
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Payment", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Payment", b =>
                 {
                     b.Property<int>("PaymentID")
                         .ValueGeneratedOnAdd()
@@ -414,13 +414,13 @@ namespace BadmintonCourts.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BadmintonRentals.Models.Court", "Court")
+                    b.HasOne("BadmintonCourts.Models.Court", "Court")
                         .WithMany("Bookings")
                         .HasForeignKey("CourtID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BadmintonRentals.Models.Equipment", "Equipment")
+                    b.HasOne("BadmintonCourts.Models.Equipment", "Equipment")
                         .WithMany("Bookings")
                         .HasForeignKey("EquipmentID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -433,9 +433,9 @@ namespace BadmintonCourts.Migrations
                     b.Navigation("Equipment");
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Court", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Court", b =>
                 {
-                    b.HasOne("BadmintonRentals.Models.Location", "Location")
+                    b.HasOne("BadmintonCourts.Models.Location", "Location")
                         .WithMany("Courts")
                         .HasForeignKey("LocationID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -444,7 +444,7 @@ namespace BadmintonCourts.Migrations
                     b.Navigation("Location");
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Payment", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Payment", b =>
                 {
                     b.HasOne("BadmintonCourts.Models.Booking", "Booking")
                         .WithMany("Payments")
@@ -516,17 +516,17 @@ namespace BadmintonCourts.Migrations
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Court", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Court", b =>
                 {
                     b.Navigation("Bookings");
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Equipment", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Equipment", b =>
                 {
                     b.Navigation("Bookings");
                 });
 
-            modelBuilder.Entity("BadmintonRentals.Models.Location", b =>
+            modelBuilder.Entity("BadmintonCourts.Models.Location", b =>
                 {
                     b.Navigation("Courts");
                 });

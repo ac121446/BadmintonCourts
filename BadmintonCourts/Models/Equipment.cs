@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BadmintonCourts.Models;
 
-namespace BadmintonRentals.Models
+namespace BadmintonCourts.Models
 {
     public class Equipment
     {

@@ -6,8 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
-using BadmintonRentals.Models;
-using Microsoft.AspNetCore.Authorization;
+using BadmintonCourts.Models;
 
 namespace BadmintonCourts.Controllers
 {
@@ -28,7 +27,7 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Courts/Details/5
-        public async Task<IActionResult> Details(int? id)       
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {

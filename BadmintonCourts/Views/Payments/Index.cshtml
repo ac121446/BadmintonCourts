@@ -1,10 +1,10 @@
-﻿@model IEnumerable<BadmintonRentals.Models.Payment>
+﻿@model IEnumerable<BadmintonCourts.Models.Payment>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Payments</h1>
+<h1>Index</h1>
 
 <p>
     <a class="btn btn-primary" asp-action="Create">Create New</a>
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.PaymentStatus)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Booking.BookingID)
+                @Html.DisplayFor(modelItem => item.Booking.BadmintonCourtsUserId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.PaymentID">Edit</a> |

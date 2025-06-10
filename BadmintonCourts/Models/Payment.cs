@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using BadmintonCourts.Models;
 
-namespace BadmintonRentals.Models
+namespace BadmintonCourts.Models
 {
     public class Payment
     {

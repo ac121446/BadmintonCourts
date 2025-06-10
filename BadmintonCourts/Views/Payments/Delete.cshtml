@@ -1,4 +1,4 @@
-﻿@model BadmintonRentals.Models.Payment
+﻿@model BadmintonCourts.Models.Payment
 
 @{
     ViewData["Title"] = "Delete";
@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Booking)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Booking.BookingID)
+            @Html.DisplayFor(model => model.Booking.BadmintonCourtsUserId)
         </dd>
     </dl>
     

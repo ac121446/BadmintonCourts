@@ -1,4 +1,5 @@
-﻿@model IEnumerable<BadmintonRentals.Models.Location>
+﻿@using BadmintonCourts.Models;
+@model PaginatedList<BadmintonCourts.Models.Location>
 
 @{
     ViewData["Title"] = "Index";
@@ -27,26 +28,26 @@
 }
 
 else{
-<table class="table table-hover">
+<table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.LocationName)</a>
+                    LocationName
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">@Html.DisplayNameFor(model => model.Addresss)</a>
+                    Addresss
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Suburb)
+                    Suburb
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.City)
+                    City
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PostalCode)
+                    PostalCode
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
+                    PhoneNumber
             </th>
             <th></th>
         </tr>
@@ -82,3 +83,29 @@ else{
     </tbody>
 </table>
 }
+<!--Deciding whether the previous and next buttons should be active-->
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<!--Links for the pagination navigation-->
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
+
+<!--Displaying current page number and total pages-->
+<div>
+    Page @Model.PageIndex of @Model.TotalPages
+</div>

@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
-using BadmintonRentals.Models;
-using Microsoft.AspNetCore.Authorization;
+using BadmintonCourts.Models;
+using Microsoft.Extensions.Options;
 
 namespace BadmintonCourts.Controllers
 {
@@ -21,33 +21,44 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Locations
-        public async Task<IActionResult> Index(string sortOrder, string searchString)
+        public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["DateSortParm"] = sortOrder == "Addresss" ? "addresss_desc" : "Addresss";
             ViewData["CurrentFilter"] = searchString;
-            var students = from s in _context.Locations
-                           select s;
+            var locations = from l in _context.Locations
+                           select l;
             if (!String.IsNullOrEmpty(searchString))
             {
-                students = students.Where(s => s.LocationName.Contains(searchString));
+                locations = locations.Where(l => l.LocationName.Contains(searchString));
             }
             switch (sortOrder)
             {
                 case "name_desc":
-                    students = students.OrderByDescending(s => s.LocationName);
+                    locations = locations.OrderByDescending(l => l.LocationName);
                     break;
                 case "Addresss":
-                    students = students.OrderBy(s => s.Addresss);
+                    locations = locations.OrderBy(l => l.Addresss);
                     break;
                 case "addresss_desc":
-                    students = students.OrderByDescending(s => s.Addresss);
+                    locations = locations.OrderByDescending(l => l.Addresss);
                     break;
                 default:
-                    students = students.OrderBy(s => s.LocationName);
+                    locations = locations.OrderBy(l => l.LocationName);
                     break;
             }
-            return View(await students.AsNoTracking().ToListAsync());
+
+            ViewData["CurrentSort"] = sortOrder; 
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            int pageSize = 10;
+            return View(await PaginatedList<Location>.CreateAsync(locations.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Locations/Details/5
@@ -190,7 +201,5 @@ namespace BadmintonCourts.Controllers
 
             return Json(matches);
         }
-
     }
 }
-

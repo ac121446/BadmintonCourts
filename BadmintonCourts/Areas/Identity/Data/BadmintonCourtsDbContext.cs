@@ -1,6 +1,5 @@
 ﻿using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
-using BadmintonRentals.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
