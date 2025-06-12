@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 
 namespace BadmintonCourts.Controllers
 {
@@ -20,9 +22,41 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Equipments
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
-            return View(await _context.Equipments.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1; 
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var equipments = from e in _context.Equipments
+                            select e;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                equipments = equipments.Where(e => e.EName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    equipments = equipments.OrderByDescending(e => e.EName);
+                    break;
+                default:
+                    equipments = equipments.OrderBy(e => e.EName);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Equipment>.CreateAsync(equipments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Equipments/Details/5

@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BadmintonCourts.Controllers
 {
@@ -14,16 +17,32 @@ namespace BadmintonCourts.Controllers
     {
         private readonly BadmintonCourtsDbContext _context;
 
+
         public BookingsController(BadmintonCourtsDbContext context)
         {
             _context = context;
         }
 
+        [Authorize]
+
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var badmintonCourtsDbContext = _context.Bookings.Include(b => b.BadmintonCourtsUser).Include(b => b.Court).Include(b => b.Equipment);
-            return View(await badmintonCourtsDbContext.ToListAsync());
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            IQueryable<Booking> bookingsQuery = _context.Bookings
+                .Include(b => b.BadmintonCourtsUser)
+                .Include(b => b.Court)
+                .Include(b => b.Equipment);
+
+            if (!User.IsInRole("Admin"))
+            {
+                //Filter bookings for non-admin users to only see their own bookings
+                bookingsQuery = bookingsQuery.Where(b => b.BadmintonCourtsUserId == userId);
+            }
+            var bookings = await bookingsQuery.ToListAsync();
+            return View(bookings);
         }
 
         // GET: Bookings/Details/5
@@ -63,13 +82,19 @@ namespace BadmintonCourts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
         {
+            if (!User.IsInRole("Admin")) 
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  //Get current user id.
+                booking.BadmintonCourtsUserId = userId;  //Automatically assign current user id to the booking.
+            }
+
             if (!ModelState.IsValid)
             {
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "Id", booking.BadmintonCourtsUserId);
+            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
             return View(booking);
