@@ -26,12 +26,26 @@ namespace BadmintonCourts.Controllers
         [Authorize]
 
         // GET: Bookings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
+
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            IQueryable<Booking> bookingsQuery = _context.Bookings
+            IQueryable<Booking> bookings = _context.Bookings
                 .Include(b => b.BadmintonCourtsUser)
                 .Include(b => b.Court)
                 .Include(b => b.Equipment);
@@ -39,10 +53,27 @@ namespace BadmintonCourts.Controllers
             if (!User.IsInRole("Admin"))
             {
                 //Filter bookings for non-admin users to only see their own bookings
-                bookingsQuery = bookingsQuery.Where(b => b.BadmintonCourtsUserId == userId);
+                bookings = bookings.Where(b => b.BadmintonCourtsUserId == userId);
             }
-            var bookings = await bookingsQuery.ToListAsync();
-            return View(bookings);
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                bookings = bookings.Where(b =>
+                    b.BadmintonCourtsUser.FirstName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    bookings = bookings.OrderByDescending(s => s.BookingDate);
+                    break;
+                default:
+                    bookings = bookings.OrderBy(s => s.BookingDate);
+                    break;
+            }
+            int pageSize = 10;
+
+            return View(await PaginatedList<Booking>.CreateAsync(bookings.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Bookings/Details/5

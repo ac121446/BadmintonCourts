@@ -23,7 +23,7 @@
 @if (!Model.Any() && !string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
 {
     <div class="alert alert-warning" role="alert">
-        No reviews found for facilities named "@ViewData["CurrentFilter"]".
+        No results found for equipments named "@ViewData["CurrentFilter"]".
     </div>
 }
 else
