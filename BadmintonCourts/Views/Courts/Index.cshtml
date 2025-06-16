@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BadmintonCourts.Models.Court>
+﻿@model PaginatedList<BadmintonCourts.Models.Court>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,20 +9,39 @@
 <p>
     <a class="btn btn-primary" asp-action="Create">Create New</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            <label>Search by Equipment Name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
+            <input type="submit" value="Search" class="btn btn-outline-primary" /> |
+            <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
+@if (!Model.Any() && !string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
+{
+    <div class="alert alert-warning" role="alert">
+        No results found for Courts named "@ViewData["CurrentFilter"]".
+    </div>
+}
+else
+{
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CourtName)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Court Name</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CourtType)
+                Court Type
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                Price
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Location)
+                Location
             </th>
             <th></th>
         </tr>
@@ -40,7 +59,7 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location.Addresss)
+                @Html.DisplayFor(modelItem => item.Location.LocationName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CourtID">Edit</a> |
@@ -51,3 +70,32 @@
 }
     </tbody>
 </table>
+}
+@if (Model.Any())
+{
+    <!-- Pagination links -->
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+    <div>
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-primary @prevDisabled">
+            Previous
+        </a>
+
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-primary @nextDisabled">
+            Next
+        </a>
+    </div>
+
+    <div>
+        Page @Model.PageIndex of @Model.TotalPages
+    </div>
+}

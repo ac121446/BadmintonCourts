@@ -32,10 +32,10 @@ else{
     <thead>
         <tr>
             <th>
-                    LocationName
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Location Name</a>
             </th>
             <th>
-                    Addresss
+                    Address
             </th>
             <th>
                     Suburb
@@ -44,10 +44,10 @@ else{
                     City
             </th>
             <th>
-                    PostalCode
+                    Postal Code
             </th>
             <th>
-                    PhoneNumber
+                    Phone Number
             </th>
             <th></th>
         </tr>

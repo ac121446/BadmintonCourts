@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
+using Microsoft.Extensions.Options; 
 
 namespace BadmintonCourts.Controllers
 {
@@ -20,10 +21,42 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Courts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
-            var badmintonCourtsDbContext = _context.Courts.Include(c => c.Location);
-            return View(await badmintonCourtsDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewData["CurrentFilter"] = searchString;
+
+            var courts = _context.Courts
+                                 .Include(e => e.Location) 
+                                 .AsQueryable();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                courts = courts.Where(e => e.CourtName.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    courts = courts.OrderByDescending(e => e.CourtName);
+                    break;
+                default:
+                    courts = courts.OrderBy(e => e.CourtName);
+                    break;
+            }
+
+            int pageSize = 10;
+            return View(await PaginatedList<Court>.CreateAsync(courts.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Courts/Details/5
