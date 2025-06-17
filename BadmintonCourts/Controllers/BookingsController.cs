@@ -42,7 +42,7 @@ namespace BadmintonCourts.Controllers
             }
 
             ViewData["CurrentFilter"] = searchString;
-
+            
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             IQueryable<Booking> bookings = _context.Bookings
@@ -98,13 +98,40 @@ namespace BadmintonCourts.Controllers
         }
 
         // GET: Bookings/Create
-        public IActionResult Create()
+        [Authorize]
+        public IActionResult Create(int? locationId)
         {
-            ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName");
+            if (locationId == null)
+            {
+                // Show all courts if no location is specified (optional fallback)
+                ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName");
+            }
+            else
+            {
+                // Show only courts from the selected location
+                ViewData["CourtID"] = new SelectList(
+                    _context.Courts.Where(c => c.LocationID == locationId),
+                    "CourtID",
+                    "CourtName"
+                );
+            }
+
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName");
+
+            // Set the user ID field if the user is logged in
+            if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                ViewData["BadmintonCourtsUserId"] = userId;
+            }
+            else
+            {
+                ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName");
+            }
+
             return View();
         }
+
 
         // POST: Bookings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

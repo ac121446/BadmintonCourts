@@ -74,9 +74,11 @@ else{
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.LocationsID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.LocationsID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.LocationsID">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.LocationsID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.LocationsID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.LocationsID">Delete</a> |
+                    <a class="btn btn-success btn-sm" asp-controller="Bookings" asp-action="Create" asp-route-locationId="@item.LocationsID">Book</a>
+
             </td>
         </tr>
 }
