@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BadmintonCourts.Migrations
 {
     [DbContext(typeof(BadmintonCourtsDbContext))]
-    [Migration("20250610214724_intial")]
+    [Migration("20250619024127_intial")]
     partial class intial
     {
         /// <inheritdoc />
@@ -154,11 +154,6 @@ namespace BadmintonCourts.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourtID"));
 
                     b.Property<string>("CourtName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("CourtType")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");

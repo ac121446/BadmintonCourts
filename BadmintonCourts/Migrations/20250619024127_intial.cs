@@ -200,7 +200,6 @@ namespace BadmintonCourts.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     LocationID = table.Column<int>(type: "int", nullable: false),
                     CourtName = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    CourtType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>

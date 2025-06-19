@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
-using Microsoft.Extensions.Options; 
 
 namespace BadmintonCourts.Controllers
 {
@@ -38,7 +37,7 @@ namespace BadmintonCourts.Controllers
             ViewData["CurrentFilter"] = searchString;
 
             var courts = _context.Courts
-                                 .Include(e => e.Location) 
+                                 .Include(e => e.Location)
                                  .AsQueryable();
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -90,9 +89,9 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CourtID,LocationID,CourtName,CourtType,Price")] Court court)
+        public async Task<IActionResult> Create([Bind("CourtID,LocationID,CourtName,Price")] Court court)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _context.Add(court);
                 await _context.SaveChangesAsync();
@@ -124,14 +123,14 @@ namespace BadmintonCourts.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CourtID,LocationID,CourtName,CourtType,Price")] Court court)
+        public async Task<IActionResult> Edit(int id, [Bind("CourtID,LocationID,CourtName,Price")] Court court)
         {
             if (id != court.CourtID)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {

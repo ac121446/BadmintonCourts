@@ -155,11 +155,6 @@ namespace BadmintonCourts.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("CourtType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
                     b.Property<int>("LocationID")
                         .HasColumnType("int");
 

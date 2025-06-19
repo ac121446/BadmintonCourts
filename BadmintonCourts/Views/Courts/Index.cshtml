@@ -32,16 +32,13 @@ else
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Court Name</a>
-            </th>
-            <th>
-                Court Type
+                 <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Court Name</a>
             </th>
             <th>
                 Price
             </th>
             <th>
-                Location
+                Location Name
             </th>
             <th></th>
         </tr>
@@ -53,17 +50,17 @@ else
                 @Html.DisplayFor(modelItem => item.CourtName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CourtType)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Location.LocationName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CourtID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CourtID">Details</a> |
+        @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" asp-route-id="@item.CourtID">Edit</a> 
+                <a asp-action="Details" asp-route-id="@item.CourtID">Details</a> 
+            }
                 <a asp-action="Delete" asp-route-id="@item.CourtID">Delete</a>
             </td>
         </tr>
