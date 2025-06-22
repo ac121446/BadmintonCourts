@@ -140,23 +140,41 @@ namespace BadmintonCourts.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
         {
-            if (!User.IsInRole("Admin")) 
+            if (!User.IsInRole("Admin"))
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);  //Get current user id.
-                booking.BadmintonCourtsUserId = userId;  //Automatically assign current user id to the booking.
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                booking.BadmintonCourtsUserId = userId;
             }
 
             if (!ModelState.IsValid)
             {
+                // Save booking first to get BookingID
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
+
+                // Create related payment with initial status "Pending"
+                var payment = new Payment
+                {
+                    BookingID = booking.BookingID,
+                    PaymentAmount = booking.TotalPrice, 
+                    PaymentDate = DateTime.Now,
+                    PaymentStatus = "Pending"
+                };
+
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
+            // If model state is invalid, reload dropdowns and show form again
             ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
+
             return View(booking);
         }
+
 
         // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)

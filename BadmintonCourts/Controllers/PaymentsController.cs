@@ -23,7 +23,6 @@ namespace BadmintonCourts.Controllers
         // GET: Payments
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
-
             ViewData["CurrentSort"] = sortOrder;
             ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
 
@@ -40,36 +39,32 @@ namespace BadmintonCourts.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
             IQueryable<Payment> payments = _context.Payments
-                .Include(b => b.PaymentAmount)
-                .Include(b => b.PaymentDate)
-                .Include(b => b.PaymentStatus);
+                .Include(p => p.Booking)
+                .ThenInclude(b => b.BadmintonCourtsUser); // Include user details for searching/filtering
 
-            // if (!User.IsInRole("Admin"))
-            //{
-
-            //  }
-
-            // if (!string.IsNullOrEmpty(searchString))
-            //{
-            // bookings = bookings.Where(b =>
-            //   b.BadmintonCourtsUser.FirstName.Contains(searchString));
-            //}
-
-            switch (sortOrder)
+            if (!User.IsInRole("Admin"))
             {
-                case "date_desc":
-                    payments = payments.OrderByDescending(p => p.PaymentAmount);
-                    break;
-                default:
-                    payments = payments.OrderBy(p => p.PaymentAmount);
-                    break;
+                // Restrict to only user's own payments
+                payments = payments.Where(p => p.Booking.BadmintonCourtsUserId == userId);
             }
-            int pageSize = 10;
 
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Filter by user's first name (adjust property name as needed)
+                payments = payments.Where(p => p.Booking.BadmintonCourtsUser.FirstName.Contains(searchString));
+            }
+
+            // Sorting by PaymentDate
+            payments = sortOrder == "date_desc"
+                ? payments.OrderByDescending(p => p.PaymentDate)
+                : payments.OrderBy(p => p.PaymentDate);
+
+            int pageSize = 10;
             return View(await PaginatedList<Payment>.CreateAsync(payments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
+
 
         // GET: Payments/Details/5
         public async Task<IActionResult> Details(int? id)
