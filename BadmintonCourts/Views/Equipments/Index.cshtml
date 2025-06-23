@@ -56,7 +56,7 @@ else
                 @Html.DisplayFor(modelItem => item.EPrice)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.EquipmentID">Edit</a> 
+                <a asp-action="Edit" asp-route-id="@item.EquipmentID"class="btn btn-sm btn-warning me-1">Edit</a> 
                 <a asp-action="Delete" asp-route-id="@item.EquipmentID">Delete</a>               
                 <a asp-action="Details" asp-route-id="@item.EquipmentID">Details</a>
             </td>
