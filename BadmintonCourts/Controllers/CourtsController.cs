@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BadmintonCourts.Areas.Identity.Data;
+using BadmintonCourts.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BadmintonCourts.Areas.Identity.Data;
-using BadmintonCourts.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BadmintonCourts.Controllers
 {
@@ -18,6 +19,8 @@ namespace BadmintonCourts.Controllers
         {
             _context = context;
         }
+
+        [Authorize(Roles = "Admin")]
 
         // GET: Courts
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)

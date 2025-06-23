@@ -56,12 +56,9 @@ else
                 @Html.DisplayFor(modelItem => item.EPrice)
             </td>
             <td>
-        @if (User.IsInRole("Admin"))
-            {
                 <a asp-action="Edit" asp-route-id="@item.EquipmentID">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.EquipmentID">Details</a> 
-            }
-                <a asp-action="Delete" asp-route-id="@item.EquipmentID">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.EquipmentID">Delete</a>               
+                <a asp-action="Details" asp-route-id="@item.EquipmentID">Details</a>
             </td>
         </tr>
 }

@@ -24,18 +24,24 @@
                             <li class="nav-item">
                                 <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Bookings</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Courts" asp-action="Index">Courts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Equipments" asp-action="Index">Equipments</a>
-                            </li>
+                             @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Courts" asp-action="Index">Courts</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Equipments" asp-action="Index">Equipments</a>
+                                </li>
+                            }
                             <li class="nav-item">
                                 <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Locations" asp-action="Index">Locations</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a>
-                            </li>
+                            @if (User.Identity.IsAuthenticated) //only allows users to view their payments are logged in
+                            {
+                                <li class="nav-item">
+                                    <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a>
+                                </li>
+                            }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

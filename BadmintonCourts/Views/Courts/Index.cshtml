@@ -56,12 +56,10 @@ else
                 @Html.DisplayFor(modelItem => item.Location.LocationName)
             </td>
             <td>
-        @if (User.IsInRole("Admin"))
-            {
+
                 <a asp-action="Edit" asp-route-id="@item.CourtID">Edit</a> 
-                <a asp-action="Details" asp-route-id="@item.CourtID">Details</a> 
-            }
                 <a asp-action="Delete" asp-route-id="@item.CourtID">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.CourtID">Details</a>
             </td>
         </tr>
 }

@@ -1,5 +1,6 @@
 ﻿using BadmintonCourts.Areas.Identity.Data;
 using BadmintonCourts.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace BadmintonCourts.Controllers
             _context = context;
         }
 
+        [Authorize]
         // GET: Payments
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
