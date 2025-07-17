@@ -75,8 +75,13 @@ body {
     padding: 2rem;
     background-color: #f9f9f9;
     border-radius: 8px;
-}   
+}
 
+#what-we-offer h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
 
 #what-we-offer .content {
   display: flex;

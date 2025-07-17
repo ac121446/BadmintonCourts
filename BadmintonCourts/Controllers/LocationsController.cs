@@ -30,7 +30,10 @@ namespace BadmintonCourts.Controllers
                            select l;
             if (!String.IsNullOrEmpty(searchString))
             {
-                locations = locations.Where(l => l.LocationName.Contains(searchString));
+                locations = locations.Where(l => l.LocationName.Contains(searchString) || l.Addresss.Contains(searchString) || l.City.Contains(searchString));
+                                            
+
+
             }
             switch (sortOrder)
             {
