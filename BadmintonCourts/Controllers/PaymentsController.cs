@@ -21,7 +21,7 @@ namespace BadmintonCourts.Controllers
             _context = context;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         // GET: Payments
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
