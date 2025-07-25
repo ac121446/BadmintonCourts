@@ -1,6 +1,8 @@
+using BadmintonCourts.Areas.Identity.Data;
+using BadmintonCourts.Data;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using BadmintonCourts.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("BadmintonCourtsDbContextConnection") ?? throw new InvalidOperationException("Connection string 'BadmintonCourtsDbContextConnection' not found.");
 
@@ -69,4 +71,5 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+await DatabaseSeed.SeedDataAsync(app);
 app.Run();
