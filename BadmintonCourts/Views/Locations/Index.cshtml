@@ -6,94 +6,83 @@
 }
 
 <div class="container mt-4">
-    <div class="card">
-        <div class="card-header d-flex align-items-center">
-            <h1 class="mb-0">Locations</h1>
-            @if (User.IsInRole("Admin"))
-            {
-                <a class="btn btn-primary ms-auto" asp-action="Create">Create New</a>
-            }
-        </div>
-        <div class="card-body">
-
-            <form asp-action="Index" method="get" class="mb-3">
-                <div class="input-group">
-                    <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Search locations by name..." />
-                    <button type="submit" class="btn btn-outline-primary">Search</button>
-                    <a class="btn btn-outline-secondary" asp-action="Index">Reset</a>
-                </div>
-            </form>
-
-            @if (!Model.Any())
-            {
-                <div class="alert alert-warning" role="alert">
-                    No results found for search "@ViewData["CurrentFilter"]".
-                </div>
-            }
-            else
-            {
-                <table class="table table-striped table-hover">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>
-                                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]" class="text-white text-decoration-none">
-                                    Location Name
-                                </a>
-                            </th>
-                            <th>Address</th>
-                            <th>Suburb</th>
-                            <th>City</th>
-                            <th>Postal Code</th>
-                            <th>Phone Number</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.LocationName)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Addresss)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Suburb)</td>
-                                <td>@Html.DisplayFor(modelItem => item.City)</td>
-                                <td>@Html.DisplayFor(modelItem => item.PostalCode)</td>
-                                <td>@Html.DisplayFor(modelItem => item.PhoneNumber)</td>
-                                <td class="text-nowrap">
-                                    @if (User.IsInRole("Admin"))
-                                    {
-                                        <a asp-action="Edit" asp-route-id="@item.LocationsID" class="btn btn-sm btn-warning me-1">Edit</a>
-                                        <a asp-action="Delete" asp-route-id="@item.LocationsID" class="btn btn-sm btn-danger me-1">Delete</a>
-                                    }
-                                    <a asp-action="Details" asp-route-id="@item.LocationsID" class="btn btn-sm btn-info me-1">Details</a>
-                                    <a asp-controller="Bookings" asp-action="Create" asp-route-locationId="@item.LocationsID" class="btn btn-sm btn-success">Book</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-
-                <nav aria-label="Page navigation">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
-                            <a class="page-link" asp-action="Index"
-                               asp-route-sortOrder="@ViewData["CurrentSort"]"
-                               asp-route-pageNumber="@(Model.PageIndex - 1)"
-                               asp-route-currentFilter="@ViewData["CurrentFilter"]">Previous</a>
-                        </li>
-                        <li class="page-item disabled">
-                            <span class="page-link">
-                                Page @Model.PageIndex of @Model.TotalPages
-                            </span>
-                        </li>
-                        <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
-                            <a class="page-link" asp-action="Index"
-                               asp-route-sortOrder="@ViewData["CurrentSort"]"
-                               asp-route-pageNumber="@(Model.PageIndex + 1)"
-                               asp-route-currentFilter="@ViewData["CurrentFilter"]">Next</a>
-                        </li>
-                    </ul>
-                </nav>
-            }
-        </div>
+    <div class="d-flex align-items-center mb-3">
+        <h1 class="me-auto">Locations</h1>
+        @if (User.IsInRole("Admin"))
+        {
+            <a class="btn btn-primary" asp-action="Create">Create New</a>
+        }
     </div>
+
+    <form asp-action="Index" method="get" class="mb-4">
+        <div class="input-group input-group-lg">
+            <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" class="form-control" placeholder="Search locations by name..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a class="btn btn-outline-secondary" asp-action="Index">Reset</a>
+        </div>
+    </form>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            No results found for search "@ViewData["CurrentFilter"]".
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var location in Model)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm hover-shadow">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@location.LocationName</h5>
+                            <p class="card-text mb-1"><i class="bi bi-geo-alt-fill me-2 text-primary"></i>@location.Addresss, @location.Suburb, @location.City, @location.PostalCode</p>
+                            <p class="card-text mb-3"><i class="bi bi-telephone-fill me-2 text-success"></i>@location.PhoneNumber</p>
+                            <div class="mt-auto">
+                                <a asp-action="Details" asp-route-id="@location.LocationsID" class="btn btn-info btn-sm me-2">Details</a>
+
+                                <a asp-controller="Bookings" asp-action="Create" asp-route-locationId="@location.LocationsID" class="btn btn-success btn-sm me-2">Book</a>
+
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Edit" asp-route-id="@location.LocationsID" class="btn btn-warning btn-sm me-2">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@location.LocationsID" class="btn btn-danger btn-sm">Delete</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex - 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">Previous</a>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        Page @Model.PageIndex of @Model.TotalPages
+                    </span>
+                </li>
+                <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index"
+                       asp-route-sortOrder="@ViewData["CurrentSort"]"
+                       asp-route-pageNumber="@(Model.PageIndex + 1)"
+                       asp-route-currentFilter="@ViewData["CurrentFilter"]">Next</a>
+                </li>
+            </ul>
+        </nav>
+    }
 </div>
+
+<style>
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.3s ease-in-out;
+    }
+</style>

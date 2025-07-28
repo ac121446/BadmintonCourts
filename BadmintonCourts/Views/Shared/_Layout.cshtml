@@ -14,13 +14,14 @@
             <div class="container-fluid">
                  <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/homeicon.png" alt="Logo" />
+                    <span class="fw-bold fs-3">Smash Rentals</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                    <ul class="navbar-nav align-items-center">
                             <li class="nav-item">
                                 <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Bookings</a>
                             </li>   
@@ -43,7 +44,9 @@
                                 </li>
                             }
                     </ul>
-                    <partial name="_LoginPartial" />
+                    <div class="d-flex ms-4">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
@@ -57,9 +60,10 @@
     <footer style="border-top: 1px solid #ccc;">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
 
-            <div class="mb-3 mb-md-0">
+            <a asp-area="" asp-controller="Home" asp-action="Index" class="d-flex align-items-center text-decoration-none text-dark">
                 <img src="~/images/homeicon.png" alt="Badminton Courts Logo" style="height: 60px;" />
-            </div>
+                <span class="fw-bold fs-3 ms-2">Smash Rentals</span>
+            </a>
 
             <nav aria-label="Footer navigation" class="mb-3 mb-md-0">
                 <ul class="list-inline mb-0">
