@@ -43,6 +43,11 @@ body > .container {
     padding-bottom: 1rem;
 }
 
+/* Change navbar colour */
+.navbar-colour {
+    background-color: #f0f0f0;
+}
+
 
 /* This is for the image on the top of my home page*/
 .homebanner {

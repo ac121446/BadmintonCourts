@@ -10,9 +10,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light navbar-colour border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                     <img src="~/images/homeicon.png" alt="Logo" />
                     <span class="fw-bold fs-3">Smash Rentals</span>
                 </a>
@@ -20,37 +20,38 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav align-items-center">
+                        <li class="nav-item">
+                            <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Locations" asp-action="Index">Locations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Pricing">Pricing</a>
+                        </li>
+                        @if (User.IsInRole("Admin"))
+                        {
                             <li class="nav-item">
-                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Bookings" asp-action="Index">Bookings</a>
-                            </li>   
-                            <li class="nav-item">
-                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Locations" asp-action="Index">Locations</a>
+                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Courts" asp-action="Index">Courts</a>
                             </li>
                             <li class="nav-item">
-                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Pricing">Pricing</a>
+                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Equipments" asp-action="Index">Equipments</a>
                             </li>
-                             @if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Courts" asp-action="Index">Courts</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Equipments" asp-action="Index">Equipments</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a>
-                                </li>
-                            }
+                            <li class="nav-item">
+                                <a class="hover-underline-animation nav-link text-dark" asp-area="" asp-controller="Payments" asp-action="Index">Payments</a>
+                            </li>
+                        }
                     </ul>
-                    <div class="d-flex ms-4">
+                    <div class="d-flex ms-auto">
                         <partial name="_LoginPartial" />
                     </div>
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -82,9 +83,9 @@
                 </ul>
             </nav>
 
-            <div class="text-center text-md-end" style="margin-top: 2rem;">
+            <div class="text-center text-md-end" style="margin-top: 1rem;">
                 <h5>Contact Us</h5>
-                <address class="mb-0">
+                <address class="mb-2">
                     <a href="mailto:ac121446@avcol.school.nz" class="text-decoration-none">ac121446@avcol.school.nz</a><br />
                     +64 021-12345678<br />
                     51 Victor Street<br />
