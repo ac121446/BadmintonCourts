@@ -6,21 +6,43 @@
 
 <h1>Bookings</h1>
 
-@if (User.IsInRole("Admin"))
-{
-    <p>
-        <a class="btn btn-primary" asp-action="Create">Create New</a>
-    </p>
-}
 
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <label>Search by First Name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
-            <input type="submit" value="Search" class="btn btn-outline-primary" /> |
-            <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
-        </p>
+<form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
+
+
+    <div class="d-flex input-group input-group-lg" style="min-width: 300px;">
+        <input type="text" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" class="form-control" placeholder="Search bookings by name..." aria-label="Search courts" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Reset</a>
     </div>
+
+
+    <!-- Sorting buttons and Create New -->
+    <div class="d-flex align-items-center justify-content-between">
+
+        <div>
+            <!-- Sorting Buttons -->
+            <input type="hidden" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" />
+
+            <div class="btn-group btn-group-lg me-3" role="group" aria-label="Booking date sorting">
+                <button type="submit" name="sortOrder" value="date_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "date_asc" ? "active" : "")">
+                    Date ↑
+                </button>
+                <button type="submit" name="sortOrder" value="date_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "date_desc" ? "active" : "")">
+                    Date ↓
+                </button>
+            </div>
+        </div>
+
+        <div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-success btn-lg" asp-action="Create">Create New</a>
+            }
+        </div>
+
+    </div>
+
 </form>
 
 @if (!Model.Any() && !string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))

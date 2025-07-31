@@ -27,7 +27,7 @@ namespace BadmintonCourts.Controllers
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "ename_desc" : "";
 
             if (searchString != null)
             {
@@ -49,7 +49,7 @@ namespace BadmintonCourts.Controllers
 
             switch (sortOrder)
             {
-                case "name_desc":
+                case "ename_desc":
                     equipments = equipments.OrderByDescending(e => e.EName);
                     break;
                 default:

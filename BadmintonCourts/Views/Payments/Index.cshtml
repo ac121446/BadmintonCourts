@@ -6,20 +6,41 @@
 
 <h1>Payments</h1>
 
-@if (User.IsInRole("Admin"))
-    {
-        <p>
-            <a class="btn btn-primary" asp-action="Create">Create New</a>
-        </p>
-    }
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <label>Search by First Name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
-            <input type="submit" value="Search" class="btn btn-outline-primary" /> |
-            <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
-        </p>
+<form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
+
+    <!-- Search Input -->
+    <div class="d-flex input-group input-group-lg" style="min-width: 300px;">
+        <input type="text" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" class="form-control" placeholder="Search payments by first name..." aria-label="Search payments" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Reset</a>
     </div>
+
+    <!-- Sorting buttons and Create New -->
+    <div class="d-flex align-items-center justify-content-between">
+
+        <div>
+            <!-- Sorting Buttons -->
+            <input type="hidden" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" />
+
+            <div class="btn-group btn-group-lg me-3" role="group" aria-label="Payment Amount sorting">
+                <button type="submit" name="sortOrder" value="amount_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "amount_asc" ? "active" : "")">
+                    Amount ↑
+                </button>
+                <button type="submit" name="sortOrder" value="amount_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "amount_desc" ? "active" : "")">
+                    Amount ↓
+                </button>
+            </div>
+        </div>
+
+        <div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-success btn-lg" asp-action="Create">Create New</a>
+            }
+        </div>
+
+    </div>
+
 </form>
 
 @if (!Model.Any() && !string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
@@ -30,75 +51,62 @@
 }
 else
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Payment Amount</a>
-            </th>
-            <th>
-                    PaymentDate
-            </th>
-            <th>
-                    PaymentStatus
-            </th>
-            <th>
-                    Booking
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentAmount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking.BadmintonCourtsUserId)
-            </td>
-            <td>
-        @if (User.IsInRole("Admin"))
-        {
-                <a asp-action="Edit" asp-route-id="@item.PaymentID" class="btn btn-sm btn-warning me-1">Edit</a> 
-                <a asp-action="Delete" asp-route-id="@item.PaymentID" class="btn btn-sm btn-danger me-1">Delete</a>
-        }
-                <a asp-action="Details" asp-route-id="@item.PaymentID" class="btn btn-sm btn-info me-1">Details</a> 
-            </td>
-        </tr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Payment Amount</th>
+                <th>Payment Date</th>
+                <th>Payment Status</th>
+                <th>Booking</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentAmount)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.PaymentStatus)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Booking.BadmintonCourtsUserId)</td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.PaymentID" class="btn btn-sm btn-warning me-1">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.PaymentID" class="btn btn-sm btn-danger me-1">Delete</a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.PaymentID" class="btn btn-sm btn-info me-1">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
-}
-<!--Deciding whether the previous and next buttons should be active-->
-@{
+
+@if (Model.Any())
+{
     var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+    <div class="d-flex gap-2 mb-3">
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex - 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-primary @prevDisabled">
+            Previous
+        </a>
+
+        <a asp-action="Index"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-pageNumber="@(Model.PageIndex + 1)"
+           asp-route-currentFilter="@ViewData["CurrentFilter"]"
+           class="btn btn-primary @nextDisabled">
+            Next
+        </a>
+    </div>
+
+    <div>
+        Page @Model.PageIndex of @Model.TotalPages
+    </div>
 }
-
-<!--Links for the pagination navigation-->
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex - 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-primary @prevDisabled">
-    Previous
-</a>
-<a asp-action="Index"
-   asp-route-sortOrder="@ViewData["CurrentSort"]"
-   asp-route-pageNumber="@(Model.PageIndex + 1)"
-   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-   class="btn btn-primary @nextDisabled">
-    Next
-</a>
-
-<!--Displaying current page number and total pages-->
-<div>
-    Page @Model.PageIndex of @Model.TotalPages
-</div>

@@ -30,7 +30,7 @@ namespace BadmintonCourts.Controllers
         {
 
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+            ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "date_asc";
 
             if (searchString != null)
             {

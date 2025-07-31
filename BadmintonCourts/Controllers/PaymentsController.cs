@@ -26,7 +26,9 @@ namespace BadmintonCourts.Controllers
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["CurrentSort"] = sortOrder;
-            ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+
+            // Sort parameters for buttons
+            ViewData["AmountSortParm"] = sortOrder == "amount_asc" ? "amount_desc" : "amount_asc";
 
             if (searchString != null)
             {
@@ -43,7 +45,7 @@ namespace BadmintonCourts.Controllers
 
             IQueryable<Payment> payments = _context.Payments
                 .Include(p => p.Booking)
-                .ThenInclude(b => b.BadmintonCourtsUser); // Include user details for searching/filtering
+                .ThenInclude(b => b.BadmintonCourtsUser); // Include user details
 
             if (!User.IsInRole("Admin"))
             {
@@ -53,18 +55,21 @@ namespace BadmintonCourts.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Filter by user's first name (adjust property name as needed)
                 payments = payments.Where(p => p.Booking.BadmintonCourtsUser.FirstName.Contains(searchString));
             }
 
-            // Sorting by PaymentDate
-            payments = sortOrder == "date_desc"
-                ? payments.OrderByDescending(p => p.PaymentDate)
-                : payments.OrderBy(p => p.PaymentDate);
+            // Sorting logic
+            payments = sortOrder switch
+            {
+                "amount_asc" => payments.OrderBy(p => p.PaymentAmount),
+                "amount_desc" => payments.OrderByDescending(p => p.PaymentAmount),
+                _ => payments.OrderBy(p => p.PaymentDate), // Default sort by date ascending
+            };
 
             int pageSize = 10;
             return View(await PaginatedList<Payment>.CreateAsync(payments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
+
 
 
 

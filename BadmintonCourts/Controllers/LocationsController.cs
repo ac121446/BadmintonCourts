@@ -23,8 +23,8 @@ namespace BadmintonCourts.Controllers
         // GET: Locations
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Addresss" ? "addresss_desc" : "Addresss";
+            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "name_asc";
+            ViewData["DateSortParm"] = sortOrder == "City" ? "city_desc" : "city";
             ViewData["CurrentFilter"] = searchString;
             var locations = from l in _context.Locations
                            select l;
@@ -40,11 +40,11 @@ namespace BadmintonCourts.Controllers
                 case "name_desc":
                     locations = locations.OrderByDescending(l => l.LocationName);
                     break;
-                case "Addresss":
-                    locations = locations.OrderBy(l => l.Addresss);
+                case "city":
+                    locations = locations.OrderBy(l => l.City);
                     break;
-                case "addresss_desc":
-                    locations = locations.OrderByDescending(l => l.Addresss);
+                case "city_desc":
+                    locations = locations.OrderByDescending(l => l.City);
                     break;
                 default:
                     locations = locations.OrderBy(l => l.LocationName);

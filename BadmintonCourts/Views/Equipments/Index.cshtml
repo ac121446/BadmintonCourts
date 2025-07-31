@@ -6,18 +6,41 @@
 
 <h1>Equipments</h1>
 
-<p>
-    <a class="btn btn-primary" asp-action="Create">Create New</a>
-</p>
+<form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
 
-<form asp-action="Index" method="get">
-    <div class="form-actions no-color">
-        <p>
-            <label>Search by Equipment Name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" /></label>
-            <input type="submit" value="Search" class="btn btn-outline-primary" /> |
-            <a class="btn btn-primary" asp-action="Index">Back to Full List</a>
-        </p>
+    <!-- Search Input -->
+    <div class="d-flex input-group input-group-lg" style="min-width: 300px;">
+        <input type="text" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" class="form-control" placeholder="Search equipments by name or type..." aria-label="Search equipments" />
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a class="btn btn-outline-secondary" asp-action="Index">Reset</a>
     </div>
+
+    <!-- Sorting buttons and Create New -->
+    <div class="d-flex align-items-center justify-content-between">
+
+        <div>
+            <!-- Sorting Buttons -->
+            <input type="hidden" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" />
+
+            <div class="btn-group btn-group-lg" role="group" aria-label="Equipment Name sorting">
+                <button type="submit" name="sortOrder" value="ename_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "ename_asc" ? "active" : "")">
+                    Name ↑
+                </button>
+                <button type="submit" name="sortOrder" value="ename_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "ename_desc" ? "active" : "")">
+                    Name ↓
+                </button>
+            </div>
+        </div>
+
+        <div>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="btn btn-success btn-lg" asp-action="Create">Create New</a>
+            }
+        </div>
+
+    </div>
+
 </form>
 
 @if (!Model.Any() && !string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
@@ -28,50 +51,39 @@
 }
 else
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Equipment Name</a>
-            </th>
-            <th>
-                Equipment type
-            </th>
-            <th>
-                Price
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EPrice)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.EquipmentID"class="btn btn-sm btn-warning me-1">Edit</a> 
-                <a asp-action="Delete" asp-route-id="@item.EquipmentID" class="btn btn-sm btn-danger me-1">Delete</a>               
-                <a asp-action="Details" asp-route-id="@item.EquipmentID" class="btn btn-sm btn-info me-1">Details</a>
-            </td>
-        </tr>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Equipment Name</th>
+                <th>Equipment Type</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.EName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EType)</td>
+                    <td>@Html.DisplayFor(modelItem => item.EPrice)</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.EquipmentID" class="btn btn-sm btn-warning me-1">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.EquipmentID" class="btn btn-sm btn-danger me-1">Delete</a>
+                        <a asp-action="Details" asp-route-id="@item.EquipmentID" class="btn btn-sm btn-info me-1">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
-}
+
 @if (Model.Any())
 {
-    <!-- Pagination links -->
-        var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 
-    <div>
+    <div class="d-flex gap-2 mb-3">
         <a asp-action="Index"
            asp-route-sortOrder="@ViewData["CurrentSort"]"
            asp-route-pageNumber="@(Model.PageIndex - 1)"

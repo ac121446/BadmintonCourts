@@ -9,43 +9,54 @@
 
     <div class="d-flex align-items-center mb-3">
         <h1 class="me-auto">Locations</h1>
-        @if (User.IsInRole("Admin"))
-        {
-            <a class="btn btn-primary" asp-action="Create">Create New</a>
-        }
     </div>
 
-    <!-- Filter and Sorting Buttons -->
-    <form asp-action="Index" method="get" class="mb-4 d-flex flex-wrap align-items-center gap-3">
+    <form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
 
-        <div class="d-flex input-group input-group-lg flex-grow-1" style="min-width: 300px;">
+        <!-- Search Input -->
+        <div class="d-flex input-group input-group-lg" style="min-width: 300px;">
             <input type="text" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" class="form-control" placeholder="Search locations by name or city..." aria-label="Search locations" />
             <button type="submit" class="btn btn-primary">Search</button>
             <a class="btn btn-outline-secondary" asp-action="Index">Reset</a>
         </div>
 
-        <!-- Sorting Buttons -->
-        <input type="hidden" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" />
+        <!-- Sorting buttons and Create New -->
+        <div class="d-flex align-items-center justify-content-between">
 
-        <div class="btn-group btn-group-lg" role="group" aria-label="Name sorting">
-            <button type="submit" name="sortOrder" value="name_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "name_asc" ? "active" : "")">
-                Name ↑
-            </button>
-            <button type="submit" name="sortOrder" value="name_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "name_desc" ? "active" : "")">
-                Name ↓
-            </button>
-        </div>
+            <div>
+                <!-- Sorting Buttons -->
+                <input type="hidden" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" />
 
-        <div class="btn-group btn-group-lg ms-3" role="group" aria-label="City sorting">
-            <button type="submit" name="sortOrder" value="city_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "city_asc" ? "active" : "")">
-                City ↑
-            </button>
-            <button type="submit" name="sortOrder" value="city_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "city_desc" ? "active" : "")">
-                City ↓
-            </button>
+                <div class="btn-group btn-group-lg me-3" role="group" aria-label="Name sorting">
+                    <button type="submit" name="sortOrder" value="name_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "name_asc" ? "active" : "")">
+                        Name ↑
+                    </button>
+                    <button type="submit" name="sortOrder" value="name_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "name_desc" ? "active" : "")">
+                        Name ↓
+                    </button>
+                </div>
+
+                <div class="btn-group btn-group-lg" role="group" aria-label="City sorting">
+                    <button type="submit" name="sortOrder" value="city_asc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "city_asc" ? "active" : "")">
+                        City ↑
+                    </button>
+                    <button type="submit" name="sortOrder" value="city_desc" class="btn btn-outline-primary @(ViewData["CurrentSort"]?.ToString() == "city_desc" ? "active" : "")">
+                        City ↓
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a class="btn btn-success btn-lg" asp-action="Create">Create New</a>
+                }
+            </div>
+
         </div>
 
     </form>
+
 
     @if (!Model.Any())
     {
