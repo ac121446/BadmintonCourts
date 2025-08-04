@@ -4,9 +4,14 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Bookings</h1>
+<h1 class="text-center mb-2 mt-5">Bookings</h1>
+<p class="text-center text-muted mb-5">
+    Check your current bookings here.
+</p>
 
 
+@if (User.IsInRole("Admin"))
+{
 <form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
 
 
@@ -35,15 +40,13 @@
         </div>
 
         <div>
-            @if (User.IsInRole("Admin"))
-            {
                 <a class="btn btn-success btn-lg" asp-action="Create">Create New</a>
-            }
         </div>
 
     </div>
 
 </form>
+}
 
 @if (!Model.Any() && !string.IsNullOrEmpty(ViewData["CurrentFilter"]?.ToString()))
 {
@@ -53,92 +56,94 @@
 }
 else
 {
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParm"]">Booking Date</a>
-            </th>
-            <th>
-                Start Time
-            </th>
-            <th>
-                End Time
-            </th>
-            <th>
-                Total Price
-            </th>
-            <th>
-                Court
-            </th>
-            <th>
-                Equipment
-            </th>
-            <th>
-                First Name
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BookingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Court.CourtName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Equipment.EName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BadmintonCourtsUser.FirstName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BookingID"class="btn btn-sm btn-warning me-1">Edit</a>
-                <a asp-action="Delete" asp-route-id="@item.BookingID" class="btn btn-sm btn-danger me-1">Delete</a>
-                <a asp-action="Details" asp-route-id="@item.BookingID" class="btn btn-sm btn-info me-1">Details</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="row row-cols-1 g-3">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card mb-3">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-md-9">
+                            <div class="card-body">
+                                <!-- Paste the two-column layout here, using 'item' -->
+                                <div class="row gy-2">
+                                    <div class="col-6">
+                                        <div><small class="text-muted">Booking Date</small></div>
+                                        <div class="fw-bold">@item.BookingDate.ToShortDateString()</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div><small class="text-muted">Time Slot</small></div>
+                                        <div class="fw-bold">
+                                            @item.StartTime.ToString("h:mm tt") - @item.EndTime.ToString("h:mm tt")
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-2 mt-3">
+                                    <div class="col-6">
+                                        <div><small class="text-muted">Court</small></div>
+                                        <div class="fw-bold">@item.Court.CourtName</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div><small class="text-muted">Total Price</small></div>
+                                        <div class="fw-bold text-success">$@item.TotalPrice.ToString("F2")</div>
+                                    </div>
+                                </div>
+
+                                <div class="row gy-2 mt-3">
+                                    <div class="col-6">
+                                        <div><small class="text-muted">User</small></div>
+                                        <div class="fw-bold">@item.BadmintonCourtsUser.FirstName</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div><small class="text-muted">Equipment</small></div>
+                                        <div class="fw-bold">@item.Equipment.EName</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 d-flex justify-content-center align-items-center">
+                            <div class="btn-group-vertical">
+                                    <a asp-action="Edit" asp-route-id="@item.CourtID" class="btn btn-warning btn-sm ms-1" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@item.CourtID" class="btn btn-danger btn-sm ms-1" title="Delete">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.CourtID" class="btn btn-info btn-sm ms-1" title="Details">
+                                        <i class="bi bi-info-circle"></i>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
 }
 @if (Model.Any())
 {
-    <!-- Pagination links -->
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-
-    <div>
-        <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex - 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-primary @prevDisabled">
-            Previous
-        </a>
-
-        <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex + 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-primary @nextDisabled">
-            Next
-        </a>
-    </div>
-
-    <div>
-        Page @Model.PageIndex of @Model.TotalPages
-    </div>
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-searchString="@(ViewData["CurrentFilter"] ?? "")">Previous</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page @Model.PageIndex of @Model.TotalPages
+                </span>
+            </li>
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-searchString="@(ViewData["CurrentFilter"] ?? "")">Next</a>
+            </li>
+        </ul>
+    </nav>
 }

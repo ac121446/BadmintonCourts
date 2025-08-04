@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Payments</h1>
+
+
+<h1 class="mt-4">Payments</h1>
 
 <form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
 
@@ -85,28 +87,25 @@ else
 
 @if (Model.Any())
 {
-    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
-    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
-
-    <div class="d-flex gap-2 mb-3">
-        <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex - 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-primary @prevDisabled">
-            Previous
-        </a>
-
-        <a asp-action="Index"
-           asp-route-sortOrder="@ViewData["CurrentSort"]"
-           asp-route-pageNumber="@(Model.PageIndex + 1)"
-           asp-route-currentFilter="@ViewData["CurrentFilter"]"
-           class="btn btn-primary @nextDisabled">
-            Next
-        </a>
-    </div>
-
-    <div>
-        Page @Model.PageIndex of @Model.TotalPages
-    </div>
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex - 1)"
+                   asp-route-searchString="@(ViewData["CurrentFilter"] ?? "")">Previous</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page @Model.PageIndex of @Model.TotalPages
+                </span>
+            </li>
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled")">
+                <a class="page-link" asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CurrentSort"]"
+                   asp-route-pageNumber="@(Model.PageIndex + 1)"
+                   asp-route-searchString="@(ViewData["CurrentFilter"] ?? "")">Next</a>
+            </li>
+        </ul>
+    </nav>
 }

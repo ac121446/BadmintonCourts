@@ -71,7 +71,7 @@ namespace BadmintonCourts.Controllers
                     bookings = bookings.OrderBy(s => s.BookingDate);
                     break;
             }
-            int pageSize = 10;
+            int pageSize = 5;
 
             return View(await PaginatedList<Booking>.CreateAsync(bookings.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
