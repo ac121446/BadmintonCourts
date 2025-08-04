@@ -123,6 +123,13 @@ else
     </div>
 
 }
+@if (!Model.Any())
+{
+    <div class="alert alert-warning" role="alert">
+        You currently have no bookings. Create a new booking by selecting "Book" in the <a asp-action="Index" asp-controller="Locations">Locations page</a> under your desired location.
+    </div>
+}
+
 @if (Model.Any())
 {
     <nav aria-label="Page navigation" class="mt-4">
