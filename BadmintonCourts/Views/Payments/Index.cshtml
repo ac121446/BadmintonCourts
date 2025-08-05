@@ -71,9 +71,17 @@ else
                     <td>@Html.DisplayFor(modelItem => item.PaymentStatus)</td>
                     <td>@Html.DisplayFor(modelItem => item.Booking.BadmintonCourtsUserId)</td>
                     <td>
-                            <a asp-action="Edit" asp-route-id="@item.PaymentID" class="btn btn-sm btn-warning me-1">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@item.PaymentID" class="btn btn-sm btn-danger me-1">Delete</a>
-                        <a asp-action="Details" asp-route-id="@item.PaymentID" class="btn btn-sm btn-info me-1">Details</a>
+                        <div class="mt-auto">
+                            <a asp-action="Edit" asp-route-id="@item.PaymentID" class="btn btn-warning btn-sm ms-1" title="Edit">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.PaymentID" class="btn btn-danger btn-sm ms-1" title="Delete">
+                                <i class="bi bi-trash3"></i> Delete
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.PaymentID" class="btn btn-info btn-sm ms-1" title="Details">
+                                <i class="bi bi-info-circle"></i> Details
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }
