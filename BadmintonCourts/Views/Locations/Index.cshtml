@@ -1,15 +1,13 @@
 ﻿@using BadmintonCourts.Models
 @model PaginatedList<BadmintonCourts.Models.Location>
 
-@{
-    ViewData["Title"] = "Locations";
-}
 
-<div class="container mt-4">
-
-    <div class="d-flex align-items-center mb-3">
-        <h1 class="me-auto">Locations</h1>
-    </div>
+<div class="container mt-5">
+    <h1 class="text-center mb-2">Locations</h1>
+    <p class="text-center text-muted mb-5">
+        Select a location to book courts for.
+    </p>
+</div>
 
     <form asp-action="Index" method="get" class="mb-4 d-flex flex-column gap-3">
 

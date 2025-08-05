@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="text-center mb-2 mt-5">Bookings</h1>
-<p class="text-center text-muted mb-5">
-    Check your current bookings here.
-</p>
-
+<div class="container mt-5">
+    <h1 class="text-center mb-2">Bookings</h1>
+    <p class="text-center text-muted mb-5">
+        Check your current bookings here.
+    </p>
+</div>
 
 @if (User.IsInRole("Admin"))
 {
@@ -22,11 +23,9 @@
     </div>
 
 
-    <!-- Sorting buttons and Create New -->
+    <!--Sorting buttons and Create New-->
     <div class="d-flex align-items-center justify-content-between">
-
         <div>
-            <!-- Sorting Buttons -->
             <input type="hidden" name="SearchString" value="@(ViewData["CurrentFilter"] ?? "")" />
 
             <div class="btn-group btn-group-lg me-3" role="group" aria-label="Booking date sorting">
@@ -61,66 +60,64 @@ else
         {
             <div class="col">
                 <div class="card mb-3">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-md-9">
+                    <div class="row g-0">
+                        <div class="col-md-12">
                             <div class="card-body">
-                                <!-- Paste the two-column layout here, using 'item' -->
-                                <div class="row gy-2">
-                                    <div class="col-6">
-                                        <div><small class="text-muted">Booking Date</small></div>
-                                        <div class="fw-bold">@item.BookingDate.ToShortDateString()</div>
+                                <div class="row gy-3">
+                                    <div class="col-4">
+                                        <div><small class="fw-bold">Booking Date</small></div>
+                                        <div class="text">@item.BookingDate.ToShortDateString()</div>
                                     </div>
-                                    <div class="col-6">
-                                        <div><small class="text-muted">Time Slot</small></div>
-                                        <div class="fw-bold">
+                                    <div class="col-4">
+                                        <div><small class="fw-bold">Time Slot</small></div>
+                                        <div class="text">
                                             @item.StartTime.ToString("h:mm tt") - @item.EndTime.ToString("h:mm tt")
-
                                         </div>
                                     </div>
+                                    <div class="col-4">
+                                        <div><small class="fw-bold">Court</small></div>
+                                        <div class="text">@item.Court.CourtName</div>
+                                    </div>
                                 </div>
 
-                                <div class="row gy-2 mt-3">
-                                    <div class="col-6">
-                                        <div><small class="text-muted">Court</small></div>
-                                        <div class="fw-bold">@item.Court.CourtName</div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div><small class="text-muted">Total Price</small></div>
+                                <div class="row gy-3 mt-3">
+                                    <div class="col-4">
+                                        <div><small class="fw-bold">Total Price</small></div>
                                         <div class="fw-bold text-success">$@item.TotalPrice.ToString("F2")</div>
                                     </div>
-                                </div>
-
-                                <div class="row gy-2 mt-3">
-                                    <div class="col-6">
-                                        <div><small class="text-muted">User</small></div>
-                                        <div class="fw-bold">@item.BadmintonCourtsUser.FirstName</div>
+                                    <div class="col-4">
+                                        <div><small class="fw-bold">User</small></div>
+                                        <div class="text">@item.BadmintonCourtsUser.FirstName</div>
                                     </div>
-                                    <div class="col-6">
-                                        <div><small class="text-muted">Equipment</small></div>
-                                        <div class="fw-bold">@item.Equipment.EName</div>
+                                    <div class="col-4">
+                                        <div><small class="fw-bold">Equipment</small></div>
+                                        <div class="text">@item.Equipment.EName</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-3 d-flex justify-content-center align-items-center">
-                            <div class="btn-group-vertical">
-                                    <a asp-action="Edit" asp-route-id="@item.BookingID" class="btn btn-warning btn-sm ms-1" title="Edit">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                <a asp-action="Delete" asp-route-id="@item.BookingID" class="btn btn-danger btn-sm ms-1" title="Delete">
-                                        <i class="bi bi-trash3"></i>
-                                    </a>
-                                <a asp-action="Details" asp-route-id="@item.BookingID" class="btn btn-info btn-sm ms-1" title="Details">
-                                        <i class="bi bi-info-circle"></i>
-                                    </a>
-                            </div>
+                    <!--Crud buttons-->
+                     <div class="card-body d-flex justify-content-start">
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@item.BookingID" class="btn btn-warning btn-sm ms-1" title="Edit">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.BookingID" class="btn btn-danger btn-sm ms-1" title="Delete">
+                                <i class="bi bi-trash3"></i> Delete
+                            </a>
+                            <a asp-action="Details" asp-route-id="@item.BookingID" class="btn btn-info btn-sm ms-1" title="Details">
+                                <i class="bi bi-info-circle"></i> Details
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         }
     </div>
+
+
 
 }
 @if (!Model.Any())
