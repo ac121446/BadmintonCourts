@@ -19,6 +19,6 @@ namespace BadmintonCourts.Models
         [Required]
         public decimal EPrice { get; set; }
 
-        public ICollection<Booking> Bookings { get; set; }
+        public ICollection<Booking>? Bookings { get; set; }
     }
 }

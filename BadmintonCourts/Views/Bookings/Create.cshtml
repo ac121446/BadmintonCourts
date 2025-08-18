@@ -1,4 +1,5 @@
-﻿@model BadmintonCourts.Models.Booking
+﻿@using System.Security.Claims
+@model BadmintonCourts.Models.Booking
 
 @{
     ViewData["Title"] = "Create";
@@ -57,11 +58,18 @@
                 <input asp-for="TotalPrice" class="form-control" />
                 <span asp-validation-for="TotalPrice" class="text-danger"></span>
             </div>
+            @if (!User.IsInRole("Admin"))
+            {
+                <input type="hidden" asp-for="BadmintonCourtsUserId" value="@User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)" />
+            }
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+
         </form>
     </div>
+
 </div>
 
 <div>

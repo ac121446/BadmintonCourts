@@ -34,7 +34,7 @@ public class BadmintonCourtsUser : IdentityUser
     [Required, RegularExpression(@"^\+?\d{1,3}[- ]?\(?\d{3}\)?[- ]?\d{3}[- ]?\d{4}$", ErrorMessage = "Invalid phone number format (please include +64)")]
     public string Phone { get; set; }
 
-    public ICollection<Booking> Bookings { get; set; }
+    public ICollection<Booking>? Bookings { get; set; }
 }
 
 

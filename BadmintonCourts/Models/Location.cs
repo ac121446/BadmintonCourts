@@ -32,7 +32,7 @@ namespace BadmintonCourts.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        public ICollection<Court> Courts { get; set; }
+        public ICollection<Court>? Courts { get; set; }
 
     }
 }

@@ -146,7 +146,7 @@ namespace BadmintonCourts.Controllers
                 booking.BadmintonCourtsUserId = userId;
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 // Save booking first to get BookingID
                 _context.Add(booking);
@@ -207,7 +207,7 @@ namespace BadmintonCourts.Controllers
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {

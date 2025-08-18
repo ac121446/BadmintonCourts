@@ -36,10 +36,10 @@ namespace BadmintonCourts.Models
         [Required]
         public decimal TotalPrice { get; set; }
 
-        public ICollection<Payment> Payments { get; set; }
-        public Court Court { get; set; }
-        public Equipment Equipment { get; set; }
-        public BadmintonCourtsUser BadmintonCourtsUser { get; set; }
+        public ICollection<Payment>? Payments { get; set; }
+        public Court? Court { get; set; }
+        public Equipment? Equipment { get; set; }
+        public BadmintonCourtsUser? BadmintonCourtsUser { get; set; }
 
 
     }

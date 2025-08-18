@@ -22,6 +22,6 @@ namespace BadmintonCourts.Models
         [Required]
         public string PaymentStatus { get; set; }
 
-        public Booking Booking { get; set; }
+        public Booking? Booking { get; set; }
     }
 }
