@@ -47,12 +47,6 @@ namespace BadmintonCourts.Controllers
                 .Include(p => p.Booking)
                 .ThenInclude(b => b.BadmintonCourtsUser); // Include user details
 
-            if (!User.IsInRole("Admin"))
-            {
-                // Restrict to only user's own payments
-                payments = payments.Where(p => p.Booking.BadmintonCourtsUserId == userId);
-            }
-
             if (!string.IsNullOrEmpty(searchString))
             {
                 payments = payments.Where(p => p.Booking.BadmintonCourtsUser.FirstName.Contains(searchString));

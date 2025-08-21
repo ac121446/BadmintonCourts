@@ -148,20 +148,8 @@ namespace BadmintonCourts.Controllers
 
             if (ModelState.IsValid)
             {
-                // Save booking first to get BookingID
+
                 _context.Add(booking);
-                await _context.SaveChangesAsync();
-
-                // Create related payment with initial status "Pending"
-                var payment = new Payment
-                {
-                    BookingID = booking.BookingID,
-                    PaymentAmount = booking.TotalPrice, 
-                    PaymentDate = DateTime.Now,
-                    PaymentStatus = "Pending"
-                };
-
-                _context.Payments.Add(payment);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
