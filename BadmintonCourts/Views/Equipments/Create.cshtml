@@ -1,43 +1,44 @@
 ﻿@model BadmintonCourts.Models.Equipment
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Equipment";
 }
 
-<h1>Create</h1>
+<h1 class="text-center mt-5">@ViewData["Title"]</h1>
 
-<h4>Equipment</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="EName" class="control-label"></label>
-                <input asp-for="EName" class="form-control" />
+<div class="center-container">
+    <div class="center-inner" style="max-width: 600px;">
+        <!-- Wider container -->
+        <form asp-action="Create" method="post">
+            <h2 class="text-center mb-4">Enter equipment details</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="EName" class="form-control" placeholder="Equipment Name" />
+                <label asp-for="EName">Equipment Name</label>
                 <span asp-validation-for="EName" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EType" class="control-label"></label>
-                <input asp-for="EType" class="form-control" />
+
+            <div class="form-floating mb-3">
+                <input asp-for="EType" class="form-control" placeholder="Equipment Type" />
+                <label asp-for="EType">Equipment Type</label>
                 <span asp-validation-for="EType" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="EPrice" class="control-label"></label>
-                <input asp-for="EPrice" class="form-control" />
+
+            <div class="form-floating mb-3">
+                <input asp-for="EPrice" class="form-control" placeholder="Price" />
+                <label asp-for="EPrice">Price ($)</label>
                 <span asp-validation-for="EPrice" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="mt-4">
+                <button type="submit" class="w-100 btn btn-lg btn-success">Create Equipment</button>
+                <a asp-action="Index" class="w-100 btn btn-lg btn-secondary mt-2">Back to List</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }

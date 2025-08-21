@@ -146,6 +146,17 @@ namespace BadmintonCourts.Controllers
                 booking.BadmintonCourtsUserId = userId;
             }
 
+            bool isOverlapping = await _context.Bookings.AnyAsync(b =>
+            b.CourtID == booking.CourtID &&
+            b.BookingDate == booking.BookingDate &&
+            ((booking.StartTime < b.EndTime) && (booking.EndTime > b.StartTime))
+            );
+
+            if (isOverlapping)
+            {
+                ModelState.AddModelError(string.Empty, "This booking overlaps with an existing one.");
+            }
+
             if (ModelState.IsValid)
             {
 
@@ -154,6 +165,7 @@ namespace BadmintonCourts.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
 
             // If model state is invalid, reload dropdowns and show form again
             ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName", booking.BadmintonCourtsUserId);

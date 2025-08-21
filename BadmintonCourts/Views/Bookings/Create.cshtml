@@ -2,80 +2,97 @@
 @model BadmintonCourts.Models.Booking
 
 @{
-    ViewData["Title"] = "Create";
-    DateTime min = DateTime.Now;
+    ViewData["Title"] = "Create Booking";
     bool noCourtsAvailable = (ViewData["NoCourtsAvailable"] as bool?) ?? false;
 }
 
-<h1>Create</h1>
+<h1 class="text-center mt-5">@ViewData["Title"]</h1>
 
-<h4>Booking</h4>
-<hr />
+<div class="center-container">
+    <div class="center-inner" style="max-width: 900px;">
+        <!-- Wider container -->
+        @if (noCourtsAvailable)
+        {
+            <div class="alert alert-warning text-center">
+                ⚠️ No courts are available at this location for booking.
+            </div>
+        }
 
-@if (noCourtsAvailable)
-{
-    <div class="alert alert-warning">
-        No courts are available at this location for booking.
-    </div>
-}
+        <form asp-action="Create" method="post">
+            <h2 class="text-center mb-4">Enter booking details</h2>
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if (User.IsInRole("Admin"))
-            {
-            <div class="form-group">
-            <label asp-for="BadmintonCourtsUserId" class="control-label"></label>
-            <select asp-for="BadmintonCourtsUserId" class ="form-control" asp-items="ViewBag.BadmintonCourtsUserId"></select>
+            <div class="row g-3">
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="col-md-6">
+                        <div class="form-floating">
+                            <select asp-for="BadmintonCourtsUserId" class="form-select" asp-items="ViewBag.BadmintonCourtsUserId"></select>
+                            <label asp-for="BadmintonCourtsUserId">User</label>
+                        </div>
+                    </div>
+                }
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select asp-for="CourtID" class="form-select" asp-items="ViewBag.CourtID"></select>
+                        <label asp-for="CourtID">Court</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <select asp-for="EquipmentID" class="form-select" asp-items="ViewBag.EquipmentID"></select>
+                        <label asp-for="EquipmentID">Equipment</label>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input asp-for="BookingDate" class="form-control" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                        <label asp-for="BookingDate">Booking Date</label>
+                        <span asp-validation-for="BookingDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input asp-for="StartTime" class="form-control" type="time" />
+                        <label asp-for="StartTime">Start Time</label>
+                        <span asp-validation-for="StartTime" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input asp-for="EndTime" class="form-control" type="time" />
+                        <label asp-for="EndTime">End Time</label>
+                        <span asp-validation-for="EndTime" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        <input asp-for="TotalPrice" class="form-control" readonly />
+                        <label asp-for="TotalPrice">Total Price ($)</label>
+                        <span asp-validation-for="TotalPrice" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-            }
-            <div class="form-group">
-                <label asp-for="CourtID" class="control-label">Court</label>
-                <select asp-for="CourtID" class="form-control" asp-items="ViewBag.CourtID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="EquipmentID" class="control-label"></label>
-                <select asp-for="EquipmentID" class ="form-control" asp-items="ViewBag.EquipmentID"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="BookingDate" class="control-label"></label>
-                <input asp-for="BookingDate" class="form-control" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
-                <span asp-validation-for="BookingDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPrice" class="control-label"></label>
-                <input asp-for="TotalPrice" class="form-control" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
+
             @if (!User.IsInRole("Admin"))
             {
                 <input type="hidden" asp-for="BadmintonCourtsUserId" value="@User.FindFirstValue(System.Security.Claims.ClaimTypes.NameIdentifier)" />
             }
 
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="mt-4">
+                <button type="submit" class="w-100 btn btn-lg btn-success">Create Booking</button>
+                <a asp-action="Index" class="w-100 btn btn-lg btn-secondary mt-2">Back to List</a>
             </div>
-
         </form>
     </div>
-
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <partial name="_ValidationScriptsPartial" />
 }
