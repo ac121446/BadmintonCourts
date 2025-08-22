@@ -89,11 +89,10 @@ namespace BadmintonCourts.Data
             // Seed Equipments
             var equipments = new Equipment[]
             {
-                new Equipment { EName = "Yonex Astrox 100ZZ", EType = "Racket", EPrice = 120.00m },
-                new Equipment { EName = "Li-Ning Shuttlecock - Pack of 12", EType = "Shuttlecock", EPrice = 25.00m },
-                new Equipment { EName = "Victor Grip Tape", EType = "Grip Tape", EPrice = 7.50m },
-                new Equipment { EName = "Yonex Voltric 80", EType = "Racket", EPrice = 85.00m },
-                new Equipment { EName = "Badminton Shoes - Size 9", EType = "Shoes", EPrice = 65.00m }
+                new Equipment { EName = "Yonex Astrox 100ZZ", EType = "Racket", EPrice = 5.00m },
+                new Equipment { EName = "Yonex - 12 Shuttlecocks per Pack", EType = "Shuttlecock", EPrice = 15.00m },
+                new Equipment { EName = "Li-Ning - 12 Shuttlecocks per Pack", EType = "Shuttlecock", EPrice = 25.00m },
+                new Equipment { EName = "Victor - 12 Shuttlecocks per Pack", EType = "Shuttlecock", EPrice = 10.00m }
             };
             context.Equipments.AddRange(equipments);
             await context.SaveChangesAsync();

@@ -101,24 +101,14 @@ namespace BadmintonCourts.Controllers
         [Authorize]
         public IActionResult Create(int? locationId)
         {
-            if (locationId == null)
-            {
-                // Show all courts if no location is specified (optional fallback)
-                ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName");
-            }
-            else
-            {
-                // Show only courts from the selected location
-                ViewData["CourtID"] = new SelectList(
-                    _context.Courts.Where(c => c.LocationID == locationId),
-                    "CourtID",
-                    "CourtName"
-                );
-            }
+            // Get courts, optionally filtered by location
+            var courts = locationId == null
+                ? _context.Courts.ToList()
+                : _context.Courts.Where(c => c.LocationID == locationId).ToList();
 
-            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName");
+            ViewBag.Courts = courts;
+            ViewBag.Equipments = _context.Equipments.ToList();
 
-            // Set the user ID field if the user is logged in
             if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -129,8 +119,13 @@ namespace BadmintonCourts.Controllers
                 ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             }
 
+            // Pass SelectList without prices for the standard dropdown (optional)
+            ViewData["CourtID"] = new SelectList(courts, "CourtID", "CourtName");
+            ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName");
+
             return View();
         }
+
 
 
         // POST: Bookings/Create
@@ -146,10 +141,17 @@ namespace BadmintonCourts.Controllers
                 booking.BadmintonCourtsUserId = userId;
             }
 
+            // Check if end time is after start time
+            if (booking.EndTime <= booking.StartTime)
+            {
+                ModelState.AddModelError(string.Empty, "End time must be after start time.");
+            }
+
+            // Check for overlapping bookings
             bool isOverlapping = await _context.Bookings.AnyAsync(b =>
-            b.CourtID == booking.CourtID &&
-            b.BookingDate == booking.BookingDate &&
-            ((booking.StartTime < b.EndTime) && (booking.EndTime > b.StartTime))
+                b.CourtID == booking.CourtID &&
+                b.BookingDate == booking.BookingDate &&
+                ((booking.StartTime < b.EndTime) && (booking.EndTime > b.StartTime))
             );
 
             if (isOverlapping)
@@ -157,15 +159,25 @@ namespace BadmintonCourts.Controllers
                 ModelState.AddModelError(string.Empty, "This booking overlaps with an existing one.");
             }
 
+            // Calculate total price only if the model state is still valid
             if (ModelState.IsValid)
             {
+                var court = await _context.Courts.FindAsync(booking.CourtID);
+                var equipment = booking.EquipmentID.HasValue
+                    ? await _context.Equipments.FindAsync(booking.EquipmentID.Value)
+                    : null;
+
+                var duration = (booking.EndTime - booking.StartTime).TotalHours;
+                var courtPrice = (decimal)duration * court.Price;
+                var equipmentPrice = equipment?.EPrice ?? 0m;
+
+                booking.TotalPrice = courtPrice + equipmentPrice;
 
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
-
 
             // If model state is invalid, reload dropdowns and show form again
             ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName", booking.BadmintonCourtsUserId);
@@ -174,6 +186,9 @@ namespace BadmintonCourts.Controllers
 
             return View(booking);
         }
+
+
+
 
 
         // GET: Bookings/Edit/5

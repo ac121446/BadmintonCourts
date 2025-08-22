@@ -27,19 +27,26 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <select asp-for="CourtID" class="form-select" asp-items="ViewBag.CourtID">
+                        <select asp-for="CourtID" class="form-select" id="CourtID" name="CourtID" aria-label="Select Court">
                             <option value="" selected disabled>Select Court</option>
+                            @foreach (var court in ViewBag.Courts)
+                            {
+                                <option value="@court.CourtID" data-price="@court.Price">@court.CourtName</option>
+                            }
                         </select>
                         <label asp-for="CourtID">Court</label>
                         <span asp-validation-for="CourtID" class="text-danger"></span>
                     </div>
-
                 </div>
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <select asp-for="EquipmentID" class="form-select" asp-items="ViewBag.EquipmentID">
-                            <option value="">Select Equipment</option>
+                        <select asp-for="EquipmentID" class="form-select" id="EquipmentID" name="EquipmentID" aria-label="Select Equipment">
+                            <option value="">No Equipment</option>
+                            @foreach (var equipment in ViewBag.Equipments)
+                            {
+                                <option value="@equipment.EquipmentID" data-price="@equipment.EPrice">@equipment.EName</option>
+                            }
                         </select>
                         <label asp-for="EquipmentID">Equipment</label>
                     </div>
@@ -55,7 +62,7 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input asp-for="StartTime" class="form-control" type="time" />
+                        <input asp-for="StartTime" class="form-control" type="time" id="StartTime" name="StartTime" />
                         <label asp-for="StartTime">Start Time</label>
                         <span asp-validation-for="StartTime" class="text-danger"></span>
                     </div>
@@ -63,7 +70,7 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input asp-for="EndTime" class="form-control" type="time" />
+                        <input asp-for="EndTime" class="form-control" type="time" id="EndTime" name="EndTime" />
                         <label asp-for="EndTime">End Time</label>
                         <span asp-validation-for="EndTime" class="text-danger"></span>
                     </div>
@@ -71,7 +78,7 @@
 
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input asp-for="TotalPrice" class="form-control"  />
+                        <input asp-for="TotalPrice" class="form-control" id="TotalPrice" name="TotalPrice" readonly />
                         <label asp-for="TotalPrice">Total Price ($)</label>
                         <span asp-validation-for="TotalPrice" class="text-danger"></span>
                     </div>
@@ -93,4 +100,48 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const courtSelect = document.getElementById('CourtID');
+            const equipmentSelect = document.getElementById('EquipmentID');
+            const startTimeInput = document.getElementById('StartTime');
+            const endTimeInput = document.getElementById('EndTime');
+            const totalPriceInput = document.getElementById('TotalPrice');
+
+            function calculatePrice() {
+                const courtOption = courtSelect.selectedOptions[0];
+                const equipmentOption = equipmentSelect.selectedOptions[0];
+
+                const courtPricePerHour = courtOption ? parseFloat(courtOption.dataset.price) || 0 : 0;
+                const equipmentPrice = equipmentOption ? parseFloat(equipmentOption.dataset.price) || 0 : 0;
+
+                const start = startTimeInput.value;
+                const end = endTimeInput.value;
+
+                if (!start || !end) {
+                    totalPriceInput.value = '';
+                    return;
+                }
+
+                const startDate = new Date(`1970-01-01T${start}:00`);
+                const endDate = new Date(`1970-01-01T${end}:00`);
+
+                if (endDate <= startDate) {
+                    totalPriceInput.value = '';
+                    return;
+                }
+
+                const durationHours = (endDate - startDate) / 1000 / 60 / 60;
+                const total = durationHours * courtPricePerHour + equipmentPrice;
+
+                totalPriceInput.value = total.toFixed(2);
+            }
+
+            courtSelect.addEventListener('change', calculatePrice);
+            equipmentSelect.addEventListener('change', calculatePrice);
+            startTimeInput.addEventListener('change', calculatePrice);
+            endTimeInput.addEventListener('change', calculatePrice);
+        });
+    </script>
 }
