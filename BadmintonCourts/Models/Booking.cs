@@ -15,10 +15,10 @@ namespace BadmintonCourts.Models
         [ForeignKey("UserID"), Required]
         public string BadmintonCourtsUserId { get; set; }
 
-        [ForeignKey("CourtID"), Required]
+        [Required(ErrorMessage = "Select your court")]
         public int CourtID { get; set; }
 
-        public int EquipmentID { get; set; }
+        public int? EquipmentID { get; set; }
  
 
         [Required(ErrorMessage = "Enter your booking date")]

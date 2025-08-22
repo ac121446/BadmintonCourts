@@ -91,8 +91,9 @@ else
                                     </div>
                                     <div class="col-4">
                                         <div><small class="fw-bold">Equipment</small></div>
-                                        <div class="text">@item.Equipment.EName</div>
+                                        <div class="text">@(item.Equipment?.EName ?? "No equipment")</div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
