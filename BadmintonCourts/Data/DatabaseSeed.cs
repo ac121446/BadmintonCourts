@@ -97,14 +97,13 @@ namespace BadmintonCourts.Data
             context.Equipments.AddRange(equipments);
             await context.SaveChangesAsync();
 
-            // Seed Bookings (use real user IDs from created users)
             var bookings = new Booking[]
             {
                 new Booking
                 {
                     BadmintonCourtsUserId = createdUsers[0].Id,
                     CourtID = courts[1].CourtID,
-                    EquipmentID = equipments[1].EquipmentID, // Shuttlecock pack
+                    EquipmentID = equipments[1].EquipmentID, 
                     BookingDate = new DateTime(2025, 9, 10),
                     StartTime = new DateTime(2025, 9, 10, 9, 0, 0),
                     EndTime = new DateTime(2025, 9, 10, 10, 0, 0),
@@ -114,11 +113,11 @@ namespace BadmintonCourts.Data
                 {
                     BadmintonCourtsUserId = createdUsers[1].Id,
                     CourtID = courts[1].CourtID,
-                    EquipmentID = equipments[1].EquipmentID, // Racket
+                    EquipmentID = equipments[1].EquipmentID, 
                     BookingDate = new DateTime(2025, 9, 11),
                     StartTime = new DateTime(2025, 9, 11, 13, 30, 0),
                     EndTime = new DateTime(2025, 9, 11, 14, 30, 0),
-                    TotalPrice = courts[1].Price + equipments[0].EPrice
+                    TotalPrice = courts[1].Price + equipments[1].EPrice
                 },
                 new Booking
                 {
@@ -134,17 +133,17 @@ namespace BadmintonCourts.Data
                 {
                     BadmintonCourtsUserId = createdUsers[3].Id,
                     CourtID = courts[3].CourtID,
-                    EquipmentID = equipments[4].EquipmentID, // Shoes
+                    EquipmentID = equipments[3].EquipmentID, 
                     BookingDate = new DateTime(2025, 9, 13),
                     StartTime = new DateTime(2025, 9, 13, 10, 0, 0),
                     EndTime = new DateTime(2025, 9, 13, 11, 0, 0),
-                    TotalPrice = courts[3].Price + equipments[4].EPrice
+                    TotalPrice = courts[3].Price + equipments[3].EPrice
                 },
                 new Booking
                 {
                     BadmintonCourtsUserId = createdUsers[4].Id,
                     CourtID = courts[4].CourtID,
-                    EquipmentID = equipments[2].EquipmentID, // Grip Tape
+                    EquipmentID = equipments[2].EquipmentID, 
                     BookingDate = new DateTime(2025, 9, 14),
                     StartTime = new DateTime(2025, 9, 14, 15, 0, 0),
                     EndTime = new DateTime(2025, 9, 14, 16, 0, 0),

@@ -33,7 +33,7 @@ namespace BadmintonCourts.Models
         [DataType(DataType.Time)]
         public DateTime EndTime { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "End time must be later than start time.")]
         public decimal TotalPrice { get; set; }
 
         public ICollection<Payment>? Payments { get; set; }
