@@ -17,18 +17,15 @@ namespace BadmintonCourts.Controllers
     {
         private readonly BadmintonCourtsDbContext _context;
 
-
         public BookingsController(BadmintonCourtsDbContext context)
         {
             _context = context;
         }
 
         [Authorize]
-
         // GET: Bookings
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
-
             ViewData["CurrentSort"] = sortOrder;
             ViewData["DateSortParm"] = string.IsNullOrEmpty(sortOrder) ? "date_desc" : "date_asc";
 
@@ -42,7 +39,7 @@ namespace BadmintonCourts.Controllers
             }
 
             ViewData["CurrentFilter"] = searchString;
-            
+
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             IQueryable<Booking> bookings = _context.Bookings
@@ -52,7 +49,7 @@ namespace BadmintonCourts.Controllers
 
             if (!User.IsInRole("Admin"))
             {
-                //Filter bookings for non-admin users to only see their own bookings
+                // Filter bookings for non-admin users to only see their own bookings
                 bookings = bookings.Where(b => b.BadmintonCourtsUserId == userId);
             }
 
@@ -71,6 +68,7 @@ namespace BadmintonCourts.Controllers
                     bookings = bookings.OrderBy(s => s.BookingDate);
                     break;
             }
+
             int pageSize = 5;
 
             return View(await PaginatedList<Booking>.CreateAsync(bookings.AsNoTracking(), pageNumber ?? 1, pageSize));
@@ -89,6 +87,7 @@ namespace BadmintonCourts.Controllers
                 .Include(b => b.Court)
                 .Include(b => b.Equipment)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
+
             if (booking == null)
             {
                 return NotFound();
@@ -126,11 +125,7 @@ namespace BadmintonCourts.Controllers
             return View();
         }
 
-
-
         // POST: Bookings/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
@@ -141,13 +136,11 @@ namespace BadmintonCourts.Controllers
                 booking.BadmintonCourtsUserId = userId;
             }
 
-            // Check if end time is after start time
             if (booking.EndTime <= booking.StartTime)
             {
                 ModelState.AddModelError(string.Empty, "End time must be after start time.");
             }
 
-            // Check for overlapping bookings
             bool isOverlapping = await _context.Bookings.AnyAsync(b =>
                 b.CourtID == booking.CourtID &&
                 b.BookingDate == booking.BookingDate &&
@@ -159,7 +152,6 @@ namespace BadmintonCourts.Controllers
                 ModelState.AddModelError(string.Empty, "This booking overlaps with an existing one.");
             }
 
-            // Calculate total price only if the model state is still valid
             if (ModelState.IsValid)
             {
                 var court = await _context.Courts.FindAsync(booking.CourtID);
@@ -176,10 +168,15 @@ namespace BadmintonCourts.Controllers
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                // Reload the booking with navigation properties for Confirmation page
+                var savedBooking = await _context.Bookings
+                    .Include(b => b.Court)
+                    .Include(b => b.Equipment)
+                    .FirstOrDefaultAsync(b => b.BookingID == booking.BookingID);
+
+                return RedirectToAction("Confirmation", new { id = savedBooking.BookingID });
             }
 
-            // If model state is invalid, reload dropdowns and show form again
             ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
@@ -187,9 +184,22 @@ namespace BadmintonCourts.Controllers
             return View(booking);
         }
 
+        // GET: Bookings/Confirmation/5
+        public async Task<IActionResult> Confirmation(int id)
+        {
+            var booking = await _context.Bookings
+                .Include(b => b.Court)
+                .Include(b => b.Equipment)
+                .Include(b => b.BadmintonCourtsUser)
+                .FirstOrDefaultAsync(b => b.BookingID == id);
 
+            if (booking == null)
+            {
+                return NotFound();
+            }
 
-
+            return View(booking);
+        }
 
         // GET: Bookings/Edit/5
         [Authorize(Roles = "Admin")]
@@ -213,11 +223,8 @@ namespace BadmintonCourts.Controllers
         }
 
         // POST: Bookings/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
         {
             if (id != booking.BookingID)
@@ -264,6 +271,7 @@ namespace BadmintonCourts.Controllers
                 .Include(b => b.Court)
                 .Include(b => b.Equipment)
                 .FirstOrDefaultAsync(m => m.BookingID == id);
+
             if (booking == null)
             {
                 return NotFound();

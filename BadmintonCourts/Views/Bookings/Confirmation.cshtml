@@ -1,0 +1,31 @@
+﻿@model BadmintonCourts.Models.Booking
+
+@{
+    ViewData["Title"] = "Booking Confirmation";
+}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow-sm p-4">
+        <h1 class="text-success mb-4">Booking Confirmed!</h1>
+        <p>Thank you for your booking. Here are the details:</p>
+
+        <dl class="row">
+            <dt class="col-sm-4 fw-semibold">Booking Date</dt>
+            <dd class="col-sm-8">@Model.BookingDate.ToString("dddd, MMMM dd, yyyy")</dd>
+
+            <dt class="col-sm-4 fw-semibold">Start Time</dt>
+            <dd class="col-sm-8">@Model.StartTime.ToString(@"hh\:mm")</dd>
+
+            <dt class="col-sm-4 fw-semibold">End Time</dt>
+            <dd class="col-sm-8">@Model.EndTime.ToString(@"hh\:mm")</dd>
+
+            <dt class="col-sm-4 fw-semibold">Court</dt>
+            <dd class="col-sm-8">@Model.Court.CourtName</dd>
+
+            <dt class="col-sm-4 fw-semibold">Total Price</dt>
+            <dd class="col-sm-8">$@Model.TotalPrice</dd>
+        </dl>
+
+        <a asp-action="Index" class="btn btn-primary mt-3">Back to Bookings</a>
+    </div>
+</div>
