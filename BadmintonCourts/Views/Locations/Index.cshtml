@@ -75,20 +75,20 @@
                             <p class="card-text mb-3"><i class="bi bi-telephone-fill me-2 text-success"></i>@location.PhoneNumber</p>
                         <div class="mt-auto">
                             <a asp-action="Details" asp-route-id="@location.LocationsID" class="btn btn-info btn-sm me-1" title="View Details">
-                                <i class="bi bi-info-circle"></i> Details
+                                <i class="bi bi-info-circle me-1"></i> Details
                             </a>
                             <!--Book button to create bookings-->
                             <a asp-controller="Bookings" asp-action="Create" asp-route-locationId="@location.LocationsID" class="btn btn-success btn-sm me-1" title="Book a Slot">
-                                <i class="bi bi-calendar-plus"></i> Book
+                                <i class="bi bi-calendar-plus me-1"></i> Book
                             </a>
                             <!--Edit and delete button only for admins-->
                             @if (User.IsInRole("Admin"))
                             {
                                 <a asp-action="Edit" asp-route-id="@location.LocationsID" class="btn btn-warning btn-sm me-1" title="Edit Location">
-                                    <i class="bi bi-pencil-square"></i> Edit
+                                    <i class="bi bi-pencil-square me-1"></i> Edit
                                 </a>
                                 <a asp-action="Delete" asp-route-id="@location.LocationsID" class="btn btn-danger btn-sm" title="Delete Location">
-                                    <i class="bi bi-trash"></i> Delete
+                                    <i class="bi bi-trash me-1"></i> Delete
                                 </a>
                             }
                         </div>
