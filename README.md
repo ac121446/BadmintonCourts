@@ -8,3 +8,7 @@ to book and mange badminton courts efficiently.
 
 ---Prerequisites--- 
 .NET SDK (Version 6.0 or later) - https://dotnet.microsoft.com/en-us/download Visual Studio (2022 is advised) - https://visualstudio.microsoft.com/
+
+---Cloning and Opening solution--- After installing Visual Studio 2022, select Clone a repositor from the start page and then paste the repository link into the box that shows up. Paste this into the bos "https://github.com/ac121446/BadmintonCourts". Click clone and wait for the repository to load and when it opens, navigate to solution explorer. If it is not visible, go to the top menu and click view then solution explorer. In this tab, double click BadmintonCourts.sln to open the project.
+
+---Package Manager Console and running the application--- After, open the Package Manager Console by clicking view, other windows then package manager console. A tab will appear at the bottom of the screen then at the PM> prompt, etner "update-database" then press enter. This applies database migrations and may also install required NuGet packages. Once the database has been updated, the projec is ready to run. At the top of the application, click the green play button with https next to it and launch the application. When the web application opens, you can register and start using the system. 
