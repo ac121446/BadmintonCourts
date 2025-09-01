@@ -1,36 +1,34 @@
 ﻿@model BadmintonCourts.Models.Equipment
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Equipment Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Equipment Details</h1>
 
-<div>
-    <h4>Equipment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EPrice)
-        </dd>
-    </dl>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Equipment Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.EName)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EType)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.EType)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.EPrice)</dt>
+            <dd class="col-sm-9">$@Html.DisplayFor(model => model.EPrice)</dd>
+        </dl>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.EquipmentID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="mt-4">
+    <a asp-action="Edit" asp-route-id="@Model?.EquipmentID" class="btn btn-warning me-2">
+        <i class="bi bi-pencil-square me-1"></i>Edit
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+    </a>
 </div>

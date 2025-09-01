@@ -1,57 +1,46 @@
 ﻿@model BadmintonCourts.Models.Location
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Location Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Location Details</h1>
 
-<div>
-    <h4>Location</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LocationName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LocationName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Addresss)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Addresss)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Suburb)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Suburb)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.City)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PostalCode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PostalCode)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-    </dl>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Location Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.LocationName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.LocationName)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Addresss)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Addresss)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Suburb)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Suburb)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.City)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.City)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PostalCode)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PostalCode)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PhoneNumber)</dd>
+        </dl>
+    </div>
 </div>
-<div>
-     @if (User.IsInRole("Admin"))
-     {
-    <a asp-action="Edit" asp-route-id="@Model?.LocationsID">Edit</a> 
-     }
-    <a asp-action="Index">Back to List</a>
+
+<div class="mt-4">
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.LocationsID" class="btn btn-warning me-2">
+            <i class="bi bi-pencil-square me-1"></i>Edit
+        </a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+    </a>
 </div>

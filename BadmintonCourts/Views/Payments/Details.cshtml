@@ -1,45 +1,40 @@
 ﻿@model BadmintonCourts.Models.Payment
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Payment Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Payment Details</h1>
 
-<div>
-    <h4>Payment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentAmount)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PaymentAmount)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PaymentDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PaymentStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Booking)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Booking.BadmintonCourtsUserId)
-        </dd>
-    </dl>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Payment Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PaymentAmount)</dt>
+            <dd class="col-sm-9">$@Html.DisplayFor(model => model.PaymentAmount)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PaymentDate)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PaymentDate)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PaymentStatus)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.PaymentStatus)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Booking)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Booking.BadmintonCourtsUserId)</dd>
+        </dl>
+    </div>
 </div>
-<div>
-     @if (User.IsInRole("Admin"))
-     {
-    <a asp-action="Edit" asp-route-id="@Model?.PaymentID">Edit</a> 
-     }
-    <a asp-action="Index">Back to List</a>
+
+<div class="mt-4">
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.PaymentID" class="btn btn-warning me-2">
+            <i class="bi bi-pencil-square me-1"></i>Edit
+        </a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+    </a>
 </div>

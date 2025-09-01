@@ -1,63 +1,49 @@
 ﻿@model BadmintonCourts.Models.Booking
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Booking Details";
 }
 
-<h1>Details</h1>
+<h1 class="mb-4">Booking Details</h1>
 
-<div>
-    <h4>Booking</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BookingDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BookingDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TotalPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Court)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Court.CourtName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Equipment)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Equipment.EName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.BadmintonCourtsUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.BadmintonCourtsUser.Id)
-        </dd>
-    </dl>
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Booking Information</h4>
+    </div>
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-sm-3">Booking Date</dt>
+            <dd class="col-sm-9">@Model.BookingDate.ToString("dddd, dd MMMM yyyy")</dd>
+
+            <dt class="col-sm-3">Start Time</dt>
+            <dd class="col-sm-9">@Model.StartTime.ToString("hh\\:mm tt")</dd>
+
+            <dt class="col-sm-3">End Time</dt>
+            <dd class="col-sm-9">@Model.EndTime.ToString("hh\\:mm tt")</dd>
+
+            <dt class="col-sm-3">Total Price</dt>
+            <dd class="col-sm-9">$@Model.TotalPrice.ToString("F2")</dd>
+
+            <dt class="col-sm-3">Court</dt>
+            <dd class="col-sm-9">@Model.Court?.CourtName</dd>
+
+            <dt class="col-sm-3">Equipment</dt>
+            <dd class="col-sm-9">@(Model.Equipment?.EName ?? "No equipment")</dd>
+
+            <dt class="col-sm-3">Booked By</dt>
+            <dd class="col-sm-9">@Model.BadmintonCourtsUser.FirstName</dd>
+        </dl>
+    </div>
 </div>
-<div>
-@if (User.IsInRole("Admin"))
+
+<div class="mt-4">
+    @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Edit" asp-route-id="@Model?.BookingID">Edit</a>
+        <a asp-action="Edit" asp-route-id="@Model?.BookingID" class="btn btn-warning me-2">
+            <i class="bi bi-pencil-square me-1"></i>Edit
+        </a>
     }
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left-circle me-1"></i> Back to List
+    </a>
 </div>
