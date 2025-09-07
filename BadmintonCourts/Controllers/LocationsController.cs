@@ -21,21 +21,24 @@ namespace BadmintonCourts.Controllers
             _context = context;
         }
 
-        // GET: Locations
+        // GET: Locations list with search, sort, and pagination
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "name_asc";
             ViewData["DateSortParm"] = sortOrder == "City" ? "city_desc" : "city";
             ViewData["CurrentFilter"] = searchString;
-            var locations = from l in _context.Locations
-                           select l;
+
+            var locations = from l in _context.Locations select l;
+
+            // Filter by search string
             if (!String.IsNullOrEmpty(searchString))
             {
-                locations = locations.Where(l => l.LocationName.Contains(searchString) || l.Addresss.Contains(searchString) || l.City.Contains(searchString));
-                                            
-
-
+                locations = locations.Where(l => l.LocationName.Contains(searchString) ||
+                                                 l.Addresss.Contains(searchString) ||
+                                                 l.City.Contains(searchString));
             }
+
+            // Sorting logic
             switch (sortOrder)
             {
                 case "name_desc":
@@ -52,7 +55,7 @@ namespace BadmintonCourts.Controllers
                     break;
             }
 
-            ViewData["CurrentSort"] = sortOrder; 
+            ViewData["CurrentSort"] = sortOrder;
             if (searchString != null)
             {
                 pageNumber = 1;
@@ -61,11 +64,12 @@ namespace BadmintonCourts.Controllers
             {
                 searchString = currentFilter;
             }
+
             int pageSize = 10;
             return View(await PaginatedList<Location>.CreateAsync(locations.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: Locations/Details/5
+        // GET: Location details by ID
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -83,16 +87,14 @@ namespace BadmintonCourts.Controllers
             return View(location);
         }
 
-        // GET: Locations/Create
+        // GET: Create new location (Admin only)
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Locations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Create new location (Admin only)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("LocationsID,LocationName,Addresss,Suburb,City,PostalCode,PhoneNumber")] Location location)
@@ -106,7 +108,7 @@ namespace BadmintonCourts.Controllers
             return View(location);
         }
 
-        // GET: Locations/Edit/5
+        // GET: Edit location (Admin only)
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -123,9 +125,7 @@ namespace BadmintonCourts.Controllers
             return View(location);
         }
 
-        // POST: Locations/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save edited location (Admin only)
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -159,7 +159,7 @@ namespace BadmintonCourts.Controllers
             return View(location);
         }
 
-        // GET: Locations/Delete/5
+        // GET: Delete location confirmation (Admin only)
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -178,7 +178,7 @@ namespace BadmintonCourts.Controllers
             return View(location);
         }
 
-        // POST: Locations/Delete/5
+        // POST: Confirm delete location (Admin only)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
@@ -194,11 +194,13 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Check if location exists
         private bool LocationExists(int id)
         {
             return _context.Locations.Any(e => e.LocationsID == id);
         }
 
+        // API: Get matching locations for autocomplete
         [HttpGet]
         public JsonResult GetMatchingLocations(string term)
         {

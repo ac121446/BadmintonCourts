@@ -23,7 +23,7 @@ namespace BadmintonCourts.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // GET: Equipments
+        // GET: Equipments list with search, sort, and pagination
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -31,7 +31,7 @@ namespace BadmintonCourts.Controllers
 
             if (searchString != null)
             {
-                pageNumber = 1; 
+                pageNumber = 1;  // Reset to first page when search changes
             }
             else
             {
@@ -40,13 +40,17 @@ namespace BadmintonCourts.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
+            // Base query for equipments
             var equipments = from e in _context.Equipments
-                            select e;
+                             select e;
+
+            // Apply search filter
             if (!String.IsNullOrEmpty(searchString))
             {
                 equipments = equipments.Where(e => e.EName.Contains(searchString));
             }
 
+            // Apply sorting
             switch (sortOrder)
             {
                 case "ename_desc":
@@ -61,7 +65,7 @@ namespace BadmintonCourts.Controllers
             return View(await PaginatedList<Equipment>.CreateAsync(equipments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: Equipments/Details/5
+        // GET: Equipment details by ID
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -79,15 +83,13 @@ namespace BadmintonCourts.Controllers
             return View(equipment);
         }
 
-        // GET: Equipments/Create
+        // GET: Create equipment form
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Equipments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save new equipment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
@@ -101,7 +103,7 @@ namespace BadmintonCourts.Controllers
             return View(equipment);
         }
 
-        // GET: Equipments/Edit/5
+        // GET: Edit equipment form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,9 +119,7 @@ namespace BadmintonCourts.Controllers
             return View(equipment);
         }
 
-        // POST: Equipments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save edited equipment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("EquipmentID,EName,EType,EPrice")] Equipment equipment)
@@ -152,7 +152,7 @@ namespace BadmintonCourts.Controllers
             return View(equipment);
         }
 
-        // GET: Equipments/Delete/5
+        // GET: Delete confirmation page
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -170,7 +170,7 @@ namespace BadmintonCourts.Controllers
             return View(equipment);
         }
 
-        // POST: Equipments/Delete/5
+        // POST: Confirm delete equipment
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -185,6 +185,7 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Helper method to check if equipment exists
         private bool EquipmentExists(int id)
         {
             return _context.Equipments.Any(e => e.EquipmentID == id);

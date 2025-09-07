@@ -21,8 +21,7 @@ namespace BadmintonCourts.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-
-        // GET: Courts
+        // GET: Courts list with search, sort, and pagination
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -39,14 +38,18 @@ namespace BadmintonCourts.Controllers
 
             ViewData["CurrentFilter"] = searchString;
 
+            // Load courts with related location data
             var courts = _context.Courts
                                  .Include(e => e.Location)
                                  .AsQueryable();
+
+            // Apply search filter
             if (!String.IsNullOrEmpty(searchString))
             {
                 courts = courts.Where(e => e.CourtName.Contains(searchString));
             }
 
+            // Apply sorting
             switch (sortOrder)
             {
                 case "name_desc":
@@ -61,7 +64,7 @@ namespace BadmintonCourts.Controllers
             return View(await PaginatedList<Court>.CreateAsync(courts.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: Courts/Details/5
+        // GET: Court details
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -69,6 +72,7 @@ namespace BadmintonCourts.Controllers
                 return NotFound();
             }
 
+            // Get court with location info
             var court = await _context.Courts
                 .Include(c => c.Location)
                 .FirstOrDefaultAsync(m => m.CourtID == id);
@@ -80,16 +84,14 @@ namespace BadmintonCourts.Controllers
             return View(court);
         }
 
-        // GET: Courts/Create
+        // GET: Create court form
         public IActionResult Create()
         {
             ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss");
             return View();
         }
 
-        // POST: Courts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save new court
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CourtID,LocationID,CourtName,Price")] Court court)
@@ -100,11 +102,12 @@ namespace BadmintonCourts.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            // Reload dropdown if validation fails
             ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss", court.LocationID);
             return View(court);
         }
 
-        // GET: Courts/Edit/5
+        // GET: Edit court form
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -121,9 +124,7 @@ namespace BadmintonCourts.Controllers
             return View(court);
         }
 
-        // POST: Courts/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save edited court
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CourtID,LocationID,CourtName,Price")] Court court)
@@ -153,11 +154,12 @@ namespace BadmintonCourts.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            // Reload dropdown if validation fails
             ViewData["LocationID"] = new SelectList(_context.Locations, "LocationsID", "Addresss", court.LocationID);
             return View(court);
         }
 
-        // GET: Courts/Delete/5
+        // GET: Delete confirmation page
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -176,7 +178,7 @@ namespace BadmintonCourts.Controllers
             return View(court);
         }
 
-        // POST: Courts/Delete/5
+        // POST: Confirm delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -191,6 +193,7 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Helper method to check if court exists
         private bool CourtExists(int id)
         {
             return _context.Courts.Any(e => e.CourtID == id);

@@ -22,12 +22,12 @@ namespace BadmintonCourts.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        // GET: Payments
+        // GET: Payments list with search, sort, and pagination
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["CurrentSort"] = sortOrder;
 
-            // Sort parameters for buttons
+            // Sorting buttons for amount
             ViewData["AmountSortParm"] = sortOrder == "amount_asc" ? "amount_desc" : "amount_asc";
 
             if (searchString != null)
@@ -43,10 +43,12 @@ namespace BadmintonCourts.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Include bookings and related users
             IQueryable<Payment> payments = _context.Payments
                 .Include(p => p.Booking)
-                .ThenInclude(b => b.BadmintonCourtsUser); // Include user details
+                .ThenInclude(b => b.BadmintonCourtsUser);
 
+            // Filter by user's first name
             if (!string.IsNullOrEmpty(searchString))
             {
                 payments = payments.Where(p => p.Booking.BadmintonCourtsUser.FirstName.Contains(searchString));
@@ -57,17 +59,14 @@ namespace BadmintonCourts.Controllers
             {
                 "amount_asc" => payments.OrderBy(p => p.PaymentAmount),
                 "amount_desc" => payments.OrderByDescending(p => p.PaymentAmount),
-                _ => payments.OrderBy(p => p.PaymentDate), // Default sort by date ascending
+                _ => payments.OrderBy(p => p.PaymentDate), // Default by date
             };
 
             int pageSize = 10;
             return View(await PaginatedList<Payment>.CreateAsync(payments.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-
-
-
-        // GET: Payments/Details/5
+        // GET: Payment details by ID
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -86,16 +85,14 @@ namespace BadmintonCourts.Controllers
             return View(payment);
         }
 
-        // GET: Payments/Create
+        // GET: Create new payment
         public IActionResult Create()
         {
             ViewData["BookingID"] = new SelectList(_context.Bookings, "BookingID", "BadmintonCourtsUserId");
             return View();
         }
 
-        // POST: Payments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save new payment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
@@ -110,7 +107,7 @@ namespace BadmintonCourts.Controllers
             return View(payment);
         }
 
-        // GET: Payments/Edit/5
+        // GET: Edit existing payment
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,9 +124,7 @@ namespace BadmintonCourts.Controllers
             return View(payment);
         }
 
-        // POST: Payments/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Save edited payment
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PaymentID,BookingID,PaymentAmount,PaymentDate,PaymentStatus")] Payment payment)
@@ -163,7 +158,7 @@ namespace BadmintonCourts.Controllers
             return View(payment);
         }
 
-        // GET: Payments/Delete/5
+        // GET: Delete confirmation page
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -182,7 +177,7 @@ namespace BadmintonCourts.Controllers
             return View(payment);
         }
 
-        // POST: Payments/Delete/5
+        // POST: Confirm delete payment
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -197,6 +192,7 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Check if payment exists
         private bool PaymentExists(int id)
         {
             return _context.Payments.Any(e => e.PaymentID == id);

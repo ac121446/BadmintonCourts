@@ -23,7 +23,7 @@ namespace BadmintonCourts.Controllers
         }
 
         [Authorize]
-        // GET: Bookings
+        // GET: Bookings list with search, sort, filter, pagination
         public async Task<IActionResult> Index(string searchString, int? pageNumber, string currentFilter, string sortOrder)
         {
             ViewData["CurrentSort"] = sortOrder;
@@ -42,23 +42,26 @@ namespace BadmintonCourts.Controllers
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            // Load bookings with related data
             IQueryable<Booking> bookings = _context.Bookings
                 .Include(b => b.BadmintonCourtsUser)
                 .Include(b => b.Court)
                 .Include(b => b.Equipment);
 
+            // Non-admin users only see their own bookings
             if (!User.IsInRole("Admin"))
             {
-                // Filter bookings for non-admin users to only see their own bookings
                 bookings = bookings.Where(b => b.BadmintonCourtsUserId == userId);
             }
 
+            // Search filter (by first name)
             if (!string.IsNullOrEmpty(searchString))
             {
                 bookings = bookings.Where(b =>
                     b.BadmintonCourtsUser.FirstName.Contains(searchString));
             }
 
+            // Sort by booking date
             switch (sortOrder)
             {
                 case "date_desc":
@@ -74,7 +77,7 @@ namespace BadmintonCourts.Controllers
             return View(await PaginatedList<Booking>.CreateAsync(bookings.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
-        // GET: Bookings/Details/5
+        // GET: Booking details page
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -96,11 +99,11 @@ namespace BadmintonCourts.Controllers
             return View(booking);
         }
 
-        // GET: Bookings/Create
+        // GET: Create booking form
         [Authorize]
         public IActionResult Create(int? locationId)
         {
-            // Get courts, optionally filtered by location
+            // Get courts (filtered by location if provided)
             var courts = locationId == null
                 ? _context.Courts.ToList()
                 : _context.Courts.Where(c => c.LocationID == locationId).ToList();
@@ -108,6 +111,7 @@ namespace BadmintonCourts.Controllers
             ViewBag.Courts = courts;
             ViewBag.Equipments = _context.Equipments.ToList();
 
+            // Auto-assign user ID for normal users
             if (User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -118,29 +122,32 @@ namespace BadmintonCourts.Controllers
                 ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName");
             }
 
-            // Pass SelectList without prices for the standard dropdown (optional)
+            // Dropdown lists
             ViewData["CourtID"] = new SelectList(courts, "CourtID", "CourtName");
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName");
 
             return View();
         }
 
-        // POST: Bookings/Create
+        // POST: Save booking
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
         {
+            // Non-admins can only book for themselves
             if (!User.IsInRole("Admin"))
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 booking.BadmintonCourtsUserId = userId;
             }
 
+            // Validate time range
             if (booking.EndTime <= booking.StartTime)
             {
                 ModelState.AddModelError(string.Empty, "End time must be after start time.");
             }
 
+            // Check for overlapping bookings
             bool isOverlapping = await _context.Bookings.AnyAsync(b =>
                 b.CourtID == booking.CourtID &&
                 b.BookingDate == booking.BookingDate &&
@@ -154,6 +161,7 @@ namespace BadmintonCourts.Controllers
 
             if (ModelState.IsValid)
             {
+                // Calculate price (court + optional equipment)
                 var court = await _context.Courts.FindAsync(booking.CourtID);
                 var equipment = booking.EquipmentID.HasValue
                     ? await _context.Equipments.FindAsync(booking.EquipmentID.Value)
@@ -165,10 +173,11 @@ namespace BadmintonCourts.Controllers
 
                 booking.TotalPrice = courtPrice + equipmentPrice;
 
+                // Save booking
                 _context.Add(booking);
                 await _context.SaveChangesAsync();
 
-                // Reload the booking with navigation properties for Confirmation page
+                // Reload booking for confirmation view
                 var savedBooking = await _context.Bookings
                     .Include(b => b.Court)
                     .Include(b => b.Equipment)
@@ -177,6 +186,7 @@ namespace BadmintonCourts.Controllers
                 return RedirectToAction("Confirmation", new { id = savedBooking.BookingID });
             }
 
+            // Reload dropdowns if validation fails
             ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "FirstName", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
@@ -184,7 +194,7 @@ namespace BadmintonCourts.Controllers
             return View(booking);
         }
 
-        // GET: Bookings/Confirmation/5
+        // GET: Booking confirmation page
         public async Task<IActionResult> Confirmation(int id)
         {
             var booking = await _context.Bookings
@@ -201,11 +211,10 @@ namespace BadmintonCourts.Controllers
             return View(booking);
         }
 
-        // GET: Bookings/Edit/5
+        // GET: Edit booking (Admin only)
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
@@ -222,7 +231,7 @@ namespace BadmintonCourts.Controllers
             return View(booking);
         }
 
-        // POST: Bookings/Edit/5
+        // POST: Save booking changes (Admin only)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BookingID,BadmintonCourtsUserId,CourtID,EquipmentID,BookingDate,StartTime,EndTime,TotalPrice")] Booking booking)
@@ -252,13 +261,14 @@ namespace BadmintonCourts.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            // Reload dropdowns if validation fails
             ViewData["BadmintonCourtsUserId"] = new SelectList(_context.Users, "Id", "Id", booking.BadmintonCourtsUserId);
             ViewData["CourtID"] = new SelectList(_context.Courts, "CourtID", "CourtName", booking.CourtID);
             ViewData["EquipmentID"] = new SelectList(_context.Equipments, "EquipmentID", "EName", booking.EquipmentID);
             return View(booking);
         }
 
-        // GET: Bookings/Delete/5
+        // GET: Delete booking confirmation
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -280,7 +290,7 @@ namespace BadmintonCourts.Controllers
             return View(booking);
         }
 
-        // POST: Bookings/Delete/5
+        // POST: Delete booking
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -295,6 +305,7 @@ namespace BadmintonCourts.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Helper method to check if booking exists
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(e => e.BookingID == id);
